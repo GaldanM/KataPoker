@@ -168,4 +168,20 @@ public class KataPokerTest {
         Assertions.assertThat(handLowestIsTriple.handType).isEqualTo(Hand.HandType.FULL_HOUSE);
         Assertions.assertThat(handHighestIsTriple.handType).isEqualTo(Hand.HandType.FULL_HOUSE);
     }
+
+    @Test
+    void createFourOfAKindHand() throws Exception {
+        ArrayList<Card> cardList = new ArrayList<>(
+            List.of(
+                new Card("2D"),
+                new Card("2H"),
+                new Card("2C"),
+                new Card("KS"),
+                new Card("2S")
+            ));
+
+        Hand hand = KataPoker.createHand(cardList);
+
+        Assertions.assertThat(hand.handType).isEqualTo(Hand.HandType.FOUR_OF_A_KIND);
+    }
 }

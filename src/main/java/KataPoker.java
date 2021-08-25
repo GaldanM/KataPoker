@@ -3,6 +3,7 @@ import java.util.ArrayList;
 public class KataPoker {
   static Hand createHand(ArrayList<Card> cardList) {
     Hand[] handsHighestToLowest = new Hand[] {
+        new FourOfAKindHand(),
         new FullHouseHand(),
         new FlushHand(),
         new StraightHand(),
