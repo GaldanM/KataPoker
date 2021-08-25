@@ -4,6 +4,9 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.EnumSource;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class KataPokerTest {
     @ParameterizedTest
     @EnumSource(Card.Suite.class)
@@ -42,5 +45,21 @@ public class KataPokerTest {
         Throwable thrown = Assertions.catchThrowable(() -> new Card(cardDescription));
 
         Assertions.assertThat(thrown).isInstanceOf(Exception.class);
+    }
+
+    @Test
+    void createHighHand() throws Exception {
+        ArrayList<Card> cardList = new ArrayList<>(
+            List.of(
+                new Card("2H"),
+                new Card("3D"),
+                new Card("6S"),
+                new Card("9C"),
+                new Card("KD")
+            ));
+
+        Hand hand = KataPoker.createHand(cardList);
+
+        Assertions.assertThat(hand.handType).isEqualTo(Hand.HandType.HIGH);
     }
 }
