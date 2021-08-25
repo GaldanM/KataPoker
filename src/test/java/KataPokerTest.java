@@ -200,4 +200,20 @@ public class KataPokerTest {
 
         Assertions.assertThat(hand.handType).isEqualTo(Hand.HandType.STRAIGHT_FLUSH);
     }
+
+    @Test
+    void createHandWithSameCard() throws Exception {
+        ArrayList<Card> cardList = new ArrayList<>(
+            List.of(
+                new Card("3D"),
+                new Card("3D"),
+                new Card("5D"),
+                new Card("2D"),
+                new Card("4D")
+            ));
+
+        Throwable thrown = Assertions.catchThrowable(() -> KataPoker.createHand(cardList));
+
+        Assertions.assertThat(thrown).isInstanceOf(Exception.class);
+    }
 }

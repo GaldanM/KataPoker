@@ -49,6 +49,19 @@ public class Card implements Comparable<Card> {
         return Integer.compare(this.value, otherCard.value);
     }
 
+    @Override
+    public boolean equals(Object object) {
+        if (object == this) {
+            return true;
+        }
+
+        if (!(object instanceof Card cardToCheck)) {
+            return false;
+        }
+
+        return this.value == cardToCheck.value && this.suite == cardToCheck.suite;
+    }
+
     public enum Suite {
         CLUB("C"),
         DIAMOND("D"),
