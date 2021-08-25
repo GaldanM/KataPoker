@@ -94,4 +94,20 @@ public class KataPokerTest {
 
         Assertions.assertThat(hand.handType).isEqualTo(Hand.HandType.TWO_PAIRS);
     }
+
+    @Test
+    void createThreeOfAKindHand() throws Exception {
+        ArrayList<Card> cardList = new ArrayList<>(
+            List.of(
+                new Card("3H"),
+                new Card("3D"),
+                new Card("3S"),
+                new Card("9C"),
+                new Card("KD")
+            ));
+
+        Hand hand = KataPoker.createHand(cardList);
+
+        Assertions.assertThat(hand.handType).isEqualTo(Hand.HandType.THREE_OF_A_KIND);
+    }
 }

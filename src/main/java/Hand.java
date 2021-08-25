@@ -9,5 +9,6 @@ abstract class Hand {
     HIGH,
     PAIR,
     TWO_PAIRS,
+    THREE_OF_A_KIND,
   }
 }

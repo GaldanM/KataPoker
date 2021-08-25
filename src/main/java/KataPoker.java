@@ -2,17 +2,19 @@ import java.util.ArrayList;
 
 public class KataPoker {
   static Hand createHand(ArrayList<Card> cardList) {
-    TwoPairsHand twoPairsHand = new TwoPairsHand();
-    PairHand pairHand = new PairHand();
-
-    if (twoPairsHand.check(cardList)) {
-      return twoPairsHand;
+    Hand[] handsHighestToLowest = new Hand[] {
+        new ThreeOfAKindHand(),
+        new TwoPairsHand(),
+        new PairHand()
+    };
+    for (Hand hand: handsHighestToLowest) {
+      if (hand.check(cardList)) {
+        return hand;
+      }
     }
 
-    if (pairHand.check(cardList)) {
-      return pairHand;
-    }
-
+    HighHand highHand = new HighHand();
+    highHand.check(cardList);
     return new HighHand();
   }
 }
