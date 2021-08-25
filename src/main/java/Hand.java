@@ -7,6 +7,7 @@ abstract class Hand {
 
   enum HandType {
     HIGH,
-    PAIR
+    PAIR,
+    TWO_PAIRS,
   }
 }
