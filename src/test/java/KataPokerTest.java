@@ -62,4 +62,20 @@ public class KataPokerTest {
 
         Assertions.assertThat(hand.handType).isEqualTo(Hand.HandType.HIGH);
     }
+
+    @Test
+    void createPairHand() throws Exception {
+        ArrayList<Card> cardList = new ArrayList<>(
+            List.of(
+                new Card("2H"),
+                new Card("3D"),
+                new Card("9S"),
+                new Card("9C"),
+                new Card("KD")
+            ));
+
+        Hand hand = KataPoker.createHand(cardList);
+
+        Assertions.assertThat(hand.handType).isEqualTo(Hand.HandType.PAIR);
+    }
 }
