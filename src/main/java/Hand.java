@@ -10,6 +10,7 @@ abstract class Hand {
     PAIR,
     TWO_PAIRS,
     THREE_OF_A_KIND,
-    STRAIGHT
+    STRAIGHT,
+    FLUSH,
   }
 }
