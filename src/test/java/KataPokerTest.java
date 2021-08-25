@@ -184,4 +184,20 @@ public class KataPokerTest {
 
         Assertions.assertThat(hand.handType).isEqualTo(Hand.HandType.FOUR_OF_A_KIND);
     }
+
+    @Test
+    void createStraightFlushHand() throws Exception {
+        ArrayList<Card> cardList = new ArrayList<>(
+            List.of(
+                new Card("3D"),
+                new Card("6D"),
+                new Card("5D"),
+                new Card("2D"),
+                new Card("4D")
+            ));
+
+        Hand hand = KataPoker.createHand(cardList);
+
+        Assertions.assertThat(hand.handType).isEqualTo(Hand.HandType.STRAIGHT_FLUSH);
+    }
 }

@@ -14,5 +14,6 @@ abstract class Hand {
     FLUSH,
     FULL_HOUSE,
     FOUR_OF_A_KIND,
+    STRAIGHT_FLUSH,
   }
 }
