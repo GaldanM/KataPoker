@@ -1,4 +1,4 @@
-public class Card {
+public class Card implements Comparable<Card> {
     int value;
     Suite suite;
 
@@ -42,6 +42,11 @@ public class Card {
             case "S" -> Suite.SPADE;
             default -> throw new Exception("Unknown suite: " + suiteChar);
         };
+    }
+
+    @Override
+    public int compareTo(Card otherCard) {
+        return Integer.compare(this.value, otherCard.value);
     }
 
     public enum Suite {

@@ -142,4 +142,30 @@ public class KataPokerTest {
 
         Assertions.assertThat(hand.handType).isEqualTo(Hand.HandType.FLUSH);
     }
+
+    @Test
+    void createFullHouseHand() throws Exception {
+        ArrayList<Card> cardListLowestIsTriple = new ArrayList<>(
+            List.of(
+                new Card("2D"),
+                new Card("KD"),
+                new Card("2C"),
+                new Card("KS"),
+                new Card("2S")
+            ));
+        ArrayList<Card> cardListHighestIsTriple = new ArrayList<>(
+            List.of(
+                new Card("KD"),
+                new Card("2D"),
+                new Card("KC"),
+                new Card("2S"),
+                new Card("KS")
+            ));
+
+        Hand handLowestIsTriple = KataPoker.createHand(cardListLowestIsTriple);
+        Hand handHighestIsTriple = KataPoker.createHand(cardListHighestIsTriple);
+
+        Assertions.assertThat(handLowestIsTriple.handType).isEqualTo(Hand.HandType.FULL_HOUSE);
+        Assertions.assertThat(handHighestIsTriple.handType).isEqualTo(Hand.HandType.FULL_HOUSE);
+    }
 }

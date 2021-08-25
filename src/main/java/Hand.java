@@ -12,5 +12,6 @@ abstract class Hand {
     THREE_OF_A_KIND,
     STRAIGHT,
     FLUSH,
+    FULL_HOUSE,
   }
 }
