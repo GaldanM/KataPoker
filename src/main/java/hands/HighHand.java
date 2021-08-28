@@ -1,3 +1,7 @@
+package hands;
+
+import card.Card;
+
 import java.util.ArrayList;
 
 public class HighHand extends Hand {
@@ -6,7 +10,7 @@ public class HighHand extends Hand {
   }
 
   @Override
-  boolean check(ArrayList<Card> cardList) {
+  public boolean check(ArrayList<Card> cardList) {
     return true;
   }
 }

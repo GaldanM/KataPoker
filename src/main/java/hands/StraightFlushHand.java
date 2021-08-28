@@ -1,6 +1,8 @@
+package hands;
+
+import card.Card;
+
 import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class StraightFlushHand extends Hand {
   public StraightFlushHand() {
@@ -8,7 +10,7 @@ public class StraightFlushHand extends Hand {
   }
 
   @Override
-  boolean check(ArrayList<Card> cardList) {
+  public boolean check(ArrayList<Card> cardList) {
     boolean isStraight = new StraightHand().check(cardList);
     boolean isFlush = new FlushHand().check(cardList);
 

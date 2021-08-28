@@ -1,3 +1,6 @@
+import card.Card;
+import hands.*;
+
 import java.util.ArrayList;
 
 public class KataPoker {

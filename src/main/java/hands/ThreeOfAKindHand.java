@@ -1,3 +1,7 @@
+package hands;
+
+import card.Card;
+
 import java.util.ArrayList;
 
 public class ThreeOfAKindHand extends Hand {

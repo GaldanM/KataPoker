@@ -1,3 +1,7 @@
+package hands;
+
+import card.Card;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,7 +11,7 @@ public class StraightHand extends Hand {
   }
 
   @Override
-  boolean check(ArrayList<Card> cardList) {
+  public boolean check(ArrayList<Card> cardList) {
     List<Integer> sortedCardsValues = cardList.stream().map(card -> card.value).sorted().toList();
 
     for (int i = 0; i < sortedCardsValues.size() - 1; i += 1) {

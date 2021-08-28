@@ -1,6 +1,8 @@
+package card;
+
 public class Card implements Comparable<Card> {
-    int value;
-    Suite suite;
+    public int value;
+    public Suite suite;
 
     public Card(String cardDescription) throws Exception {
         this.value = parseValue(cardDescription.substring(0, 1));

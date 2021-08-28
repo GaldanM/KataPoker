@@ -1,3 +1,7 @@
+package hands;
+
+import card.Card;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -8,7 +12,7 @@ public class FullHouseHand extends Hand {
   }
 
   @Override
-  boolean check(ArrayList<Card> cardList) {
+  public boolean check(ArrayList<Card> cardList) {
     List<Card> cardListSorted = cardList.stream().sorted().collect(Collectors.toList());
 
     boolean firstTwoAreTheSame = cardListSorted.get(0).value == cardListSorted.get(1).value;

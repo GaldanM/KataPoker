@@ -1,3 +1,7 @@
+package hands;
+
+import card.Card;
+
 import java.util.ArrayList;
 
 public class PairHand extends Hand {
@@ -6,7 +10,7 @@ public class PairHand extends Hand {
   }
 
   @Override
-  boolean check(ArrayList<Card> cardList) {
+  public boolean check(ArrayList<Card> cardList) {
     for (int i = 0; i < cardList.size(); i += 1) {
       Card cardLeft = cardList.get(i);
 

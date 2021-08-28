@@ -1,3 +1,7 @@
+package hands;
+
+import card.Card;
+
 import java.util.ArrayList;
 
 public class FlushHand extends Hand {
@@ -6,7 +10,7 @@ public class FlushHand extends Hand {
   }
 
   @Override
-  boolean check(ArrayList<Card> cardList) {
+  public boolean check(ArrayList<Card> cardList) {
     Card.Suite suiteToCheck = cardList.get(0).suite;
 
     for (int i = 1; i < cardList.size(); i += 1) {
