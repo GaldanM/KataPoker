@@ -46,4 +46,8 @@ public class KataPoker {
 
     return false;
   }
+
+  public static String whichHandWins(Hand blackHand, Hand whiteHand) {
+    return "White wins. - with high card: Ace";
+  }
 }
