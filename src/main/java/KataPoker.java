@@ -4,7 +4,12 @@ import hands.*;
 import java.util.ArrayList;
 
 public class KataPoker {
-  static Hand createHand(ArrayList<Card> cardList) throws Exception {
+  static Hand createHand(String[] cardDescriptions) throws Exception {
+    ArrayList<Card> cardList = new ArrayList<>();
+    for (String cardDescription : cardDescriptions) {
+      cardList.add(new Card(cardDescription));
+    }
+
     boolean hasDuplicateCard = checkIfListHasDuplicateCard(cardList);
     if (hasDuplicateCard) {
       throw new Exception("The hand has a duplicate card, which is not right");
