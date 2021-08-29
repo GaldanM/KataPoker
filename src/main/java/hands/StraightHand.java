@@ -25,4 +25,9 @@ public class StraightHand extends Hand {
 
     return true;
   }
+
+  @Override
+  public CompareResults compare(Hand whiteHand) {
+    return null;
+  }
 }

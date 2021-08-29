@@ -24,4 +24,9 @@ public class PairHand extends Hand {
     }
     return false;
   }
+
+  @Override
+  public CompareResults compare(Hand whiteHand) {
+    return null;
+  }
 }

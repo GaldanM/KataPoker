@@ -33,7 +33,7 @@ public class KataPoker {
 
     HighHand highHand = new HighHand();
     highHand.check(cardList);
-    return new HighHand();
+    return highHand;
   }
 
   private static boolean checkIfListHasDuplicateCard(ArrayList<Card> cardList) {
@@ -53,6 +53,13 @@ public class KataPoker {
   }
 
   public static String whichHandWins(Hand blackHand, Hand whiteHand) {
-    return "White wins. - with high card: Ace";
+    Hand.CompareResults compareResults = blackHand.compare(whiteHand);
+
+    if (compareResults.result == Hand.Result.WIN) {
+      return "Black wins.";
+    } else if (compareResults.result == Hand.Result.LOSE) {
+      return "White wins.";
+    }
+    return "Tie.";
   }
 }

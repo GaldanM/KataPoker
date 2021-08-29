@@ -16,4 +16,9 @@ public class StraightFlushHand extends Hand {
 
     return isStraight && isFlush;
   }
+
+  @Override
+  public CompareResults compare(Hand whiteHand) {
+    return null;
+  }
 }
