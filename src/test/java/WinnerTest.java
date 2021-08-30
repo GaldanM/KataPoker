@@ -268,6 +268,51 @@ public class WinnerTest {
     );
   }
 
+  @ParameterizedTest(name = "{0}")
+  @MethodSource("flushTestsGenerator")
+  void flushTest(String testName, WinnerTestParameter parameters) {
+    String winningOutput = KataPoker.whichHandWins(parameters.blackHand, parameters.whiteHand);
+
+    Assertions.assertThat(winningOutput).isEqualTo(parameters.expectedOutput);
+  }
+  public static Stream<Arguments> flushTestsGenerator() throws Exception {
+    WinnerTestParameter[] parameters = new WinnerTestParameter[] {
+        new WinnerTestParameter(
+            new String[] { "TC", "4C", "8C", "KC", "AC" },
+            new String[] { "2D", "3S", "4D", "5H", "6D" },
+            "Black wins."
+        ),
+        new WinnerTestParameter(
+            new String[] { "TC", "4C", "8C", "KC", "AC" },
+            new String[] { "2D", "2S", "2H", "3H", "3D" },
+            "White wins."
+        ),
+        new WinnerTestParameter(
+            new String[] { "TC", "4C", "8C", "KC", "AC" },
+            new String[] { "TD", "4D", "8D", "KD", "QD" },
+            "Black wins."
+        ),
+        new WinnerTestParameter(
+            new String[] { "TD", "4D", "8D", "KD", "QD" },
+            new String[] { "TC", "4C", "8C", "KC", "AC" },
+            "White wins."
+        ),
+        new WinnerTestParameter(
+            new String[] { "TD", "4D", "8D", "KD", "AD" },
+            new String[] { "TC", "4C", "8C", "KC", "AC" },
+            "Tie."
+        ),
+    };
+
+    return Stream.of(
+        Arguments.of("Flush against WEAKER Hand", parameters[0]),
+        Arguments.of("Flush against STRONGER Hand", parameters[1]),
+        Arguments.of("Flush against WEAKER Flush", parameters[2]),
+        Arguments.of("Flush against STRONGER Flush", parameters[3]),
+        Arguments.of("Flush against SAME Flush", parameters[4])
+    );
+  }
+
   public static class WinnerTestParameter {
     Hand blackHand;
     Hand whiteHand;
