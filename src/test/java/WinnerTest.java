@@ -58,6 +58,63 @@ public class WinnerTest {
     );
   }
 
+  @ParameterizedTest(name = "{0}")
+  @MethodSource("pairTestsGenerator")
+  void pairTest(String testName, WinnerTestParameter parameters) {
+    String winningOutput = KataPoker.whichHandWins(parameters.blackHand, parameters.whiteHand);
+
+    Assertions.assertThat(winningOutput).isEqualTo(parameters.expectedOutput);
+  }
+  public static Stream<Arguments> pairTestsGenerator() throws Exception {
+    WinnerTestParameter[] parameters = new WinnerTestParameter[] {
+        new WinnerTestParameter(
+            new String[] { "2C", "3H", "4S", "4C", "AH" },
+            new String[] { "2H", "3S", "4D", "8H", "AD" },
+            "Black wins."
+        ),
+        new WinnerTestParameter(
+            new String[] { "2C", "3H", "4S", "4C", "AH" },
+            new String[] { "2H", "2S", "3D", "3S", "AD" },
+            "White wins."
+        ),
+        new WinnerTestParameter(
+            new String[] { "2C", "3H", "4S", "4C", "AH" },
+            new String[] { "2H", "2S", "3D", "4S", "AD" },
+            "Black wins."
+        ),
+        new WinnerTestParameter(
+            new String[] { "2C", "3H", "4S", "4C", "AH" },
+            new String[] { "8H", "8S", "3D", "4S", "AD" },
+            "White wins."
+        ),
+        new WinnerTestParameter(
+            new String[] { "2C", "3H", "4S", "4C", "AH" },
+            new String[] { "4H", "4D", "3D", "2S", "KD" },
+            "Black wins."
+        ),
+        new WinnerTestParameter(
+            new String[] { "4H", "4D", "3D", "2S", "KD" },
+            new String[] { "2C", "3H", "4S", "4C", "AH" },
+            "White wins."
+        ),
+        new WinnerTestParameter(
+            new String[] { "2C", "3H", "4S", "4C", "AH" },
+            new String[] { "4H", "4D", "3D", "2S", "AD" },
+            "Tie."
+        ),
+    };
+
+    return Stream.of(
+        Arguments.of("Pair against WEAKER Hand", parameters[0]),
+        Arguments.of("Pair against STRONGER Hand", parameters[1]),
+        Arguments.of("Pair against WEAKER Pair", parameters[2]),
+        Arguments.of("Pair against STRONGER Pair", parameters[3]),
+        Arguments.of("Pair against SAME Pair AND WEAKER highest card among the rest", parameters[4]),
+        Arguments.of("Pair against SAME Pair AND STRONGER highest card among the rest", parameters[5]),
+        Arguments.of("Pair against SAME Pair AND SAME cards among the rest", parameters[6])
+    );
+  }
+
   public static class WinnerTestParameter {
     Hand blackHand;
     Hand whiteHand;
