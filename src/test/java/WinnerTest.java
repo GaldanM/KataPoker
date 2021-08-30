@@ -184,6 +184,45 @@ public class WinnerTest {
     );
   }
 
+  @ParameterizedTest(name = "{0}")
+  @MethodSource("threeOfAKindTestsGenerator")
+  void threeOfAKindTest(String testName, WinnerTestParameter parameters) {
+    String winningOutput = KataPoker.whichHandWins(parameters.blackHand, parameters.whiteHand);
+
+    Assertions.assertThat(winningOutput).isEqualTo(parameters.expectedOutput);
+  }
+  public static Stream<Arguments> threeOfAKindTestsGenerator() throws Exception {
+    WinnerTestParameter[] parameters = new WinnerTestParameter[] {
+        new WinnerTestParameter(
+            new String[] { "2C", "2H", "2S", "4C", "AH" },
+            new String[] { "3H", "5S", "4D", "8H", "AD" },
+            "Black wins."
+        ),
+        new WinnerTestParameter(
+            new String[] { "2C", "2H", "2S", "4C", "AH" },
+            new String[] { "2D", "3S", "4D", "5H", "6D" },
+            "White wins."
+        ),
+        new WinnerTestParameter(
+            new String[] { "3C", "3H", "3S", "4C", "AH" },
+            new String[] { "2D", "2S", "2H", "5H", "6D" },
+            "Black wins."
+        ),
+        new WinnerTestParameter(
+            new String[] { "2C", "2H", "2S", "4C", "AH" },
+            new String[] { "3D", "3S", "3H", "5H", "6D" },
+            "White wins."
+        ),
+    };
+
+    return Stream.of(
+        Arguments.of("Three of a Kind against WEAKER Hand", parameters[0]),
+        Arguments.of("Three of a Kind against STRONGER Hand", parameters[1]),
+        Arguments.of("Three of a Kind against WEAKER Three of a Kind", parameters[2]),
+        Arguments.of("Three of a Kind against STRONGER Three of a Kind", parameters[3])
+    );
+  }
+
   public static class WinnerTestParameter {
     Hand blackHand;
     Hand whiteHand;

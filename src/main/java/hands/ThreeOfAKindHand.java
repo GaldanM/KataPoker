@@ -5,6 +5,8 @@ import card.Card;
 import java.util.ArrayList;
 
 public class ThreeOfAKindHand extends Hand {
+  int threeOfAKindValue;
+
   public ThreeOfAKindHand() {
     this.handType = HandType.THREE_OF_A_KIND;
   }
@@ -21,6 +23,7 @@ public class ThreeOfAKindHand extends Hand {
           countKind += 1;
 
           if (countKind == 3) {
+            this.threeOfAKindValue = cardLeft.value;
             return true;
           }
         }
@@ -31,7 +34,25 @@ public class ThreeOfAKindHand extends Hand {
   }
 
   @Override
-  public CompareResults compare(Hand whiteHand) {
-    return null;
+  public CompareResults compare(Hand otherHand) {
+    HandType[] weakerHandTypes = new HandType[] { HandType.HIGH, HandType.PAIR, HandType.TWO_PAIRS };
+
+    for (HandType weakerHandType : weakerHandTypes) {
+      if (otherHand.handType == weakerHandType) {
+        return new CompareResults(Result.WIN);
+      }
+    }
+
+    if (otherHand.handType != this.handType) {
+      return new CompareResults(Result.LOSE);
+    }
+
+    int otherHandValue = ((ThreeOfAKindHand) otherHand).threeOfAKindValue;
+
+    if (this.threeOfAKindValue > otherHandValue) {
+      return new CompareResults(Result.WIN);
+    }
+
+    return new CompareResults(Result.LOSE);
   }
 }
