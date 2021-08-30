@@ -223,6 +223,51 @@ public class WinnerTest {
     );
   }
 
+  @ParameterizedTest(name = "{0}")
+  @MethodSource("straightTestsGenerator")
+  void straightTest(String testName, WinnerTestParameter parameters) {
+    String winningOutput = KataPoker.whichHandWins(parameters.blackHand, parameters.whiteHand);
+
+    Assertions.assertThat(winningOutput).isEqualTo(parameters.expectedOutput);
+  }
+  public static Stream<Arguments> straightTestsGenerator() throws Exception {
+    WinnerTestParameter[] parameters = new WinnerTestParameter[] {
+        new WinnerTestParameter(
+            new String[] { "2C", "3H", "4S", "5C", "6H" },
+            new String[] { "3D", "3S", "3C", "8H", "AD" },
+            "Black wins."
+        ),
+        new WinnerTestParameter(
+            new String[] { "2C", "3H", "4S", "5C", "6H" },
+            new String[] { "3D", "5D", "9D", "8D", "TD" },
+            "White wins."
+        ),
+        new WinnerTestParameter(
+            new String[] { "3C", "4H", "5S", "6C", "7H" },
+            new String[] { "2C", "3H", "4S", "5C", "6H" },
+            "Black wins."
+        ),
+        new WinnerTestParameter(
+            new String[] { "2C", "3H", "4S", "5C", "6H" },
+            new String[] { "3C", "4H", "5S", "6C", "7H" },
+            "White wins."
+        ),
+        new WinnerTestParameter(
+            new String[] { "2C", "3H", "4S", "5C", "6H" },
+            new String[] { "2S", "3D", "4C", "5D", "6S" },
+            "Tie."
+        ),
+    };
+
+    return Stream.of(
+        Arguments.of("Straight against WEAKER Hand", parameters[0]),
+        Arguments.of("Straight against STRONGER Hand", parameters[1]),
+        Arguments.of("Straight against WEAKER Straight", parameters[2]),
+        Arguments.of("Straight against STRONGER Straight", parameters[3]),
+        Arguments.of("Straight against SAME Straight", parameters[4])
+    );
+  }
+
   public static class WinnerTestParameter {
     Hand blackHand;
     Hand whiteHand;

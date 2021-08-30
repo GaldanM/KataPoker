@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class StraightHand extends Hand {
+  int highestValue;
+
   public StraightHand() {
     this.handType = HandType.STRAIGHT;
   }
@@ -23,11 +25,33 @@ public class StraightHand extends Hand {
       }
     }
 
+    this.highestValue = sortedCardsValues.get(4);
+
     return true;
   }
 
   @Override
-  public CompareResults compare(Hand whiteHand) {
-    return null;
+  public CompareResults compare(Hand otherHand) {
+    HandType[] weakerHandTypes = new HandType[] { HandType.HIGH, HandType.PAIR, HandType.TWO_PAIRS, HandType.THREE_OF_A_KIND };
+
+    for (HandType weakerHandType : weakerHandTypes) {
+      if (otherHand.handType == weakerHandType) {
+        return new CompareResults(Result.WIN);
+      }
+    }
+
+    if (otherHand.handType != this.handType) {
+      return new CompareResults(Result.LOSE);
+    }
+
+    int otherHandValue = ((StraightHand) otherHand).highestValue;
+
+    if (this.highestValue > otherHandValue) {
+      return new CompareResults(Result.WIN);
+    } else if (this.highestValue == otherHandValue) {
+      return new CompareResults(Result.TIE);
+    }
+
+    return new CompareResults(Result.LOSE);
   }
 }
