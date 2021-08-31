@@ -352,6 +352,45 @@ public class WinnerTest {
     );
   }
 
+  @ParameterizedTest(name = "{0}")
+  @MethodSource("fourOfAKindTestsGenerator")
+  void fourOfAKindTest(String testName, WinnerTestParameter parameters) {
+    String winningOutput = KataPoker.whichHandWins(parameters.blackHand, parameters.whiteHand);
+
+    Assertions.assertThat(winningOutput).isEqualTo(parameters.expectedOutput);
+  }
+  public static Stream<Arguments> fourOfAKindTestsGenerator() throws Exception {
+    WinnerTestParameter[] parameters = new WinnerTestParameter[] {
+        new WinnerTestParameter(
+            new String[] { "2C", "2H", "2S", "2D", "AH" },
+            new String[] { "3H", "3S", "3D", "4H", "4D" },
+            "Black wins."
+        ),
+        new WinnerTestParameter(
+            new String[] { "2C", "2H", "2S", "2D", "AH" },
+            new String[] { "3D", "4D", "5D", "6D", "7D" },
+            "White wins."
+        ),
+        new WinnerTestParameter(
+            new String[] { "2C", "2H", "2S", "2D", "AC" },
+            new String[] { "3C", "3H", "3S", "3D", "AH" },
+            "White wins."
+        ),
+        new WinnerTestParameter(
+            new String[] { "3C", "3H", "3S", "3D", "AH" },
+            new String[] { "2C", "2H", "2S", "2D", "AC" },
+            "Black wins."
+        ),
+    };
+
+    return Stream.of(
+        Arguments.of("Four of a Kind against WEAKER Hand", parameters[0]),
+        Arguments.of("Four of a Kind against STRONGER Hand", parameters[1]),
+        Arguments.of("Four of a Kind against STRONGER Four of a Kind", parameters[2]),
+        Arguments.of("Four of a Kind against WEAKER Four of a Kind", parameters[3])
+    );
+  }
+
   public static class WinnerTestParameter {
     Hand blackHand;
     Hand whiteHand;
