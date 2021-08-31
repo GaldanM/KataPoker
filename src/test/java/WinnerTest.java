@@ -313,6 +313,45 @@ public class WinnerTest {
     );
   }
 
+  @ParameterizedTest(name = "{0}")
+  @MethodSource("fullHouseTestsGenerator")
+  void fullHouseTest(String testName, WinnerTestParameter parameters) {
+    String winningOutput = KataPoker.whichHandWins(parameters.blackHand, parameters.whiteHand);
+
+    Assertions.assertThat(winningOutput).isEqualTo(parameters.expectedOutput);
+  }
+  public static Stream<Arguments> fullHouseTestsGenerator() throws Exception {
+    WinnerTestParameter[] parameters = new WinnerTestParameter[] {
+        new WinnerTestParameter(
+            new String[] { "4S", "4C", "4D", "5S", "5C" },
+            new String[] { "2D", "3S", "4D", "5H", "6D" },
+            "Black wins."
+        ),
+        new WinnerTestParameter(
+            new String[] { "4S", "4C", "4D", "5S", "5C" },
+            new String[] { "2D", "2S", "2C", "2H", "3D" },
+            "White wins."
+        ),
+        new WinnerTestParameter(
+            new String[] { "3S", "3C", "3D", "5S", "5C" },
+            new String[] { "4S", "4C", "4D", "5S", "5C" },
+            "White wins."
+        ),
+        new WinnerTestParameter(
+            new String[] { "4S", "4C", "4D", "5S", "5C" },
+            new String[] { "3S", "3C", "3D", "5S", "5C" },
+            "Black wins."
+        ),
+    };
+
+    return Stream.of(
+        Arguments.of("Full House against WEAKER Hand", parameters[0]),
+        Arguments.of("Full House against STRONGER Hand", parameters[1]),
+        Arguments.of("Full House against Full House with STRONGER Triple", parameters[2]),
+        Arguments.of("Full House against Full House with WEAKER Triple", parameters[3])
+    );
+  }
+
   public static class WinnerTestParameter {
     Hand blackHand;
     Hand whiteHand;

@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class FullHouseHand extends Hand {
+  int tripleValue;
+
   public FullHouseHand() {
     this.handType = HandType.FULL_HOUSE;
   }
@@ -22,6 +24,12 @@ public class FullHouseHand extends Hand {
       boolean isFirstTwoTheTriple = cardListSorted.get(2).value == cardListSorted.get(0).value;
       boolean isLastTwoTheTriple = cardListSorted.get(2).value == cardListSorted.get(4).value;
 
+      if (isFirstTwoTheTriple) {
+        this.tripleValue = cardListSorted.get(0).value;
+      } else if (isLastTwoTheTriple) {
+        this.tripleValue = cardListSorted.get(4).value;
+      }
+
       return isFirstTwoTheTriple || isLastTwoTheTriple;
     }
 
@@ -29,7 +37,25 @@ public class FullHouseHand extends Hand {
   }
 
   @Override
-  public CompareResults compare(Hand whiteHand) {
-    return null;
+  public CompareResults compare(Hand otherHand) {
+    HandType[] strongerHandTypes = new HandType[] { HandType.FOUR_OF_A_KIND, HandType.STRAIGHT_FLUSH };
+
+    for (HandType strongerHandType : strongerHandTypes) {
+      if (otherHand.handType == strongerHandType) {
+        return new CompareResults(Result.LOSE);
+      }
+    }
+
+    if (otherHand.handType != this.handType) {
+      return new CompareResults(Result.WIN);
+    }
+
+    int otherHandTripleValue = ((FullHouseHand) otherHand).tripleValue;
+
+    if (this.tripleValue < otherHandTripleValue) {
+      return new CompareResults(Result.LOSE);
+    }
+
+    return new CompareResults(Result.WIN);
   }
 }
