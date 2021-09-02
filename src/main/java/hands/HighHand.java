@@ -12,6 +12,7 @@ public class HighHand extends Hand {
 
   public HighHand() {
     this.handType = HandType.HIGH;
+    this.name = "high card";
   }
 
   @Override

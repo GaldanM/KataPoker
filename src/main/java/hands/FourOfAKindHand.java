@@ -9,6 +9,7 @@ public class FourOfAKindHand extends Hand {
 
   public FourOfAKindHand() {
     this.handType = HandType.FOUR_OF_A_KIND;
+    this.name = "four of a kind";
   }
 
   @Override

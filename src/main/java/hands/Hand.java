@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 public abstract class Hand {
   public HandType handType;
+  public String name;
 
   public abstract boolean check(ArrayList<Card> cardList);
 

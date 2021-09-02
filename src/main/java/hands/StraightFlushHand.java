@@ -9,6 +9,7 @@ public class StraightFlushHand extends Hand {
 
   public StraightFlushHand() {
     this.handType = HandType.STRAIGHT_FLUSH;
+    this.name = "straight flush";
   }
 
   @Override

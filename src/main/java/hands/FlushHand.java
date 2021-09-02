@@ -12,6 +12,7 @@ public class FlushHand extends Hand {
 
   public FlushHand() {
     this.handType = HandType.FLUSH;
+    this.name = "flush";
   }
 
   @Override

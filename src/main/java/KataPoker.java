@@ -1,7 +1,9 @@
 import card.Card;
 import hands.*;
 
+import java.util.AbstractMap;
 import java.util.ArrayList;
+import java.util.Map;
 
 public class KataPoker {
   static Hand createHand(String[] cardDescriptions) throws Exception {
@@ -55,11 +57,14 @@ public class KataPoker {
   public static String whichHandWins(Hand blackHand, Hand whiteHand) {
     Hand.CompareResults compareResults = blackHand.compare(whiteHand);
 
-    if (compareResults.result == Hand.Result.WIN) {
-      return "Black wins.";
-    } else if (compareResults.result == Hand.Result.LOSE) {
-      return "White wins.";
+    if (compareResults.result == Hand.Result.TIE) {
+      return "Tie.";
     }
-    return "Tie.";
+
+    Map.Entry<String, Hand> blackHandWithColor = new AbstractMap.SimpleEntry<>("Black", blackHand);
+    Map.Entry<String, Hand> whiteHandWithColor = new AbstractMap.SimpleEntry<>("White", whiteHand);
+    Map.Entry<String, Hand> winningHand = compareResults.result == Hand.Result.WIN ? blackHandWithColor : whiteHandWithColor;
+
+    return winningHand.getKey() + " wins. - with " + winningHand.getValue().name;
   }
 }

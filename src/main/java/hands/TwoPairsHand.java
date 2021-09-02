@@ -12,6 +12,7 @@ public class TwoPairsHand extends Hand {
 
   public TwoPairsHand() {
     this.handType = HandType.TWO_PAIRS;
+    this.name = "two pairs";
   }
 
   @Override
