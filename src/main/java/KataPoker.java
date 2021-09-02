@@ -65,6 +65,6 @@ public class KataPoker {
     Map.Entry<String, Hand> whiteHandWithColor = new AbstractMap.SimpleEntry<>("White", whiteHand);
     Map.Entry<String, Hand> winningHand = compareResults.result == Hand.Result.WIN ? blackHandWithColor : whiteHandWithColor;
 
-    return winningHand.getKey() + " wins. - with " + winningHand.getValue().name;
+    return winningHand.getKey() + " wins. - with " + winningHand.getValue().name + ": " + compareResults.winningCondition;
   }
 }

@@ -46,6 +46,25 @@ public class Card implements Comparable<Card> {
         };
     }
 
+    public String valueToString() {
+        return switch (this.value) {
+            case 11 -> "Jack";
+            case 12 -> "Queen";
+            case 13 -> "King";
+            case 14 -> "Ace";
+            default -> String.valueOf(this.value);
+        };
+    }
+
+    public String suiteToString() {
+        return switch (this.suite) {
+            case CLUB -> "Club";
+            case HEART -> "Heart";
+            case SPADE -> "Spade";
+            case DIAMOND -> "Diamond";
+        };
+    }
+
     @Override
     public int compareTo(Card otherCard) {
         return Integer.compare(this.value, otherCard.value);

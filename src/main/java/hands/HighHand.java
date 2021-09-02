@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class HighHand extends Hand {
-  public List<Integer> valuesSorted;
+  public List<Card> cardsSorted;
 
   public HighHand() {
     this.handType = HandType.HIGH;
@@ -17,9 +17,8 @@ public class HighHand extends Hand {
 
   @Override
   public boolean check(ArrayList<Card> cardList) {
-    this.valuesSorted = cardList.stream().map(card -> card.value)
-        .sorted(Collections.reverseOrder())
-        .collect(Collectors.toList());
+    this.cardsSorted = cardList.stream().sorted(Collections.reverseOrder()).collect(Collectors.toList());
+    this.winningCondition = this.getWinningCondition(this.cardsSorted.get(0));
 
     return true;
   }
@@ -27,21 +26,26 @@ public class HighHand extends Hand {
   @Override
   public CompareResults compare(Hand otherHand) {
     if (otherHand.handType != this.handType) {
-      return new CompareResults(Result.LOSE);
+      return new CompareResults(Result.LOSE, otherHand.winningCondition);
     }
 
-    List<Integer> otherHandValuesSorted = ((HighHand) otherHand).valuesSorted;
+    List<Card> otherHandValuesSorted = ((HighHand) otherHand).cardsSorted;
 
-    for (int i = 0; i < this.valuesSorted.size(); i += 1) {
-      int compareResults = this.valuesSorted.get(i).compareTo(otherHandValuesSorted.get(i));
+    for (int i = 0; i < this.cardsSorted.size(); i += 1) {
+      Card currentThisCard = this.cardsSorted.get(i);
+      Card currentOtherHandCard = otherHandValuesSorted.get(i);
 
-      if (compareResults > 0) {
-        return new CompareResults(Result.WIN);
-      } else if (compareResults < 0) {
-        return new CompareResults(Result.LOSE);
+      if (currentThisCard.value > currentOtherHandCard.value) {
+        return new CompareResults(Result.WIN, this.getWinningCondition(currentThisCard));
+      } else if (currentThisCard.value < currentOtherHandCard.value) {
+        return new CompareResults(Result.LOSE, this.getWinningCondition(currentOtherHandCard));
       }
     }
 
     return new CompareResults(Result.TIE);
+  }
+
+  private String getWinningCondition(Card winningCard) {
+    return winningCard.valueToString();
   }
 }

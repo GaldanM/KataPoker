@@ -25,6 +25,8 @@ public class FourOfAKindHand extends Hand {
 
           if (countKind == 4) {
             this.quadrupleValue = cardLeft.value;
+            this.winningCondition = cardLeft.valueToString();
+
             return true;
           }
         }
@@ -37,19 +39,19 @@ public class FourOfAKindHand extends Hand {
   @Override
   public CompareResults compare(Hand otherHand) {
     if (otherHand.handType == HandType.STRAIGHT_FLUSH) {
-      return new CompareResults(Result.LOSE);
+      return new CompareResults(Result.LOSE, otherHand.winningCondition);
     }
 
     if (otherHand.handType != this.handType) {
-      return new CompareResults(Result.WIN);
+      return new CompareResults(Result.WIN, this.winningCondition);
     }
 
     int otherHandQuadrupleValue = ((FourOfAKindHand) otherHand).quadrupleValue;
 
     if (this.quadrupleValue < otherHandQuadrupleValue) {
-      return new CompareResults(Result.LOSE);
+      return new CompareResults(Result.LOSE, otherHand.winningCondition);
     }
 
-    return new CompareResults(Result.WIN);
+    return new CompareResults(Result.WIN, this.winningCondition);
   }
 }

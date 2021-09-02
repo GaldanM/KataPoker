@@ -7,8 +7,8 @@ import java.util.Collections;
 import java.util.List;
 
 public class PairHand extends Hand {
-  public int highestPairValue;
-  public List<Integer> restValuesOrdered;
+  public Card pairCard;
+  public List<Card> remainingCardsOrdered;
 
   public PairHand() {
     this.handType = HandType.PAIR;
@@ -24,11 +24,13 @@ public class PairHand extends Hand {
         Card cardRight = cardList.get(j);
 
         if (cardLeft.value == cardRight.value) {
+          this.pairCard = cardLeft;
+          this.winningCondition = this.getWinningCondition(cardLeft);
+
           ArrayList<Card> tmp = new ArrayList<>(cardList);
           tmp.remove(i);
           tmp.remove(j - 1);
-          this.restValuesOrdered = List.copyOf(tmp.stream().map(card -> card.value).sorted(Collections.reverseOrder()).toList());
-          this.highestPairValue = cardLeft.value;
+          this.remainingCardsOrdered = List.copyOf(tmp.stream().sorted(Collections.reverseOrder()).toList());
 
           return true;
         }
@@ -40,24 +42,25 @@ public class PairHand extends Hand {
   @Override
   public CompareResults compare(Hand otherHand) {
     if (otherHand.handType == HandType.HIGH) {
-      return new CompareResults(Result.WIN);
+      return new CompareResults(Result.WIN, this.winningCondition);
     }
 
     if (otherHand.handType == this.handType) {
-      int highestPairCompareResult = Integer.compare(this.highestPairValue, ((PairHand) otherHand).highestPairValue);
+      Card otherHandPairCard = ((PairHand) otherHand).pairCard;
 
-      if (highestPairCompareResult > 0) {
-        return new CompareResults(Result.WIN);
-      } else if (highestPairCompareResult == 0) {
-        List<Integer> otherHandValuesSorted = ((PairHand) otherHand).restValuesOrdered;
+      if (this.pairCard.value > otherHandPairCard.value) {
+        return new CompareResults(Result.WIN, this.winningCondition);
+      } else if (this.pairCard.value == otherHandPairCard.value) {
+        List<Card> otherHandValuesSorted = ((PairHand) otherHand).remainingCardsOrdered;
 
-        for (int i = 0; i < this.restValuesOrdered.size(); i += 1) {
-          int compareResults = this.restValuesOrdered.get(i).compareTo(otherHandValuesSorted.get(i));
+        for (int i = 0; i < this.remainingCardsOrdered.size(); i += 1) {
+          Card currentThisCard = this.remainingCardsOrdered.get(i);
+          Card currentOtherHandCard = otherHandValuesSorted.get(i);
 
-          if (compareResults > 0) {
-            return new CompareResults(Result.WIN);
-          } else if (compareResults < 0) {
-            return new CompareResults(Result.LOSE);
+          if (currentThisCard.value > currentOtherHandCard.value) {
+            return new CompareResults(Result.WIN, this.getWinningCondition(this.pairCard, currentThisCard));
+          } else if (currentThisCard.value < currentOtherHandCard.value) {
+            return new CompareResults(Result.LOSE, this.getWinningCondition(otherHandPairCard, currentOtherHandCard));
           }
         }
 
@@ -65,6 +68,14 @@ public class PairHand extends Hand {
       }
     }
 
-    return new CompareResults(Result.LOSE);
+    return new CompareResults(Result.LOSE, otherHand.winningCondition);
+  }
+
+  private String getWinningCondition(Card pairCard) {
+    return pairCard.valueToString();
+  }
+
+  private String getWinningCondition(Card pairCard, Card highestCard) {
+    return pairCard.valueToString() + " and high card " + highestCard.valueToString();
   }
 }

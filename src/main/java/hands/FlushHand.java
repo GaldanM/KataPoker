@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class FlushHand extends Hand {
-  List<Integer> valuesSorted;
+  List<Card> cardsSorted;
 
   public FlushHand() {
     this.handType = HandType.FLUSH;
@@ -27,7 +27,8 @@ public class FlushHand extends Hand {
       }
     }
 
-    this.valuesSorted = cardList.stream().map(card -> card.value).sorted(Collections.reverseOrder()).collect(Collectors.toList());
+    this.cardsSorted = cardList.stream().sorted(Collections.reverseOrder()).collect(Collectors.toList());
+    this.winningCondition = getWinningCondition(this.cardsSorted.get(0));
 
     return true;
   }
@@ -38,26 +39,34 @@ public class FlushHand extends Hand {
 
     for (HandType strongerHandType : strongerHandTypes) {
       if (otherHand.handType == strongerHandType) {
-        return new CompareResults(Result.LOSE);
+        return new CompareResults(Result.LOSE, otherHand.winningCondition);
       }
     }
 
     if (otherHand.handType != HandType.FLUSH) {
-      return new CompareResults(Result.WIN);
+      return new CompareResults(Result.WIN, this.winningCondition);
     }
 
-    List<Integer> otherHandValuesSorted = ((FlushHand) otherHand).valuesSorted;
+    List<Card> otherHandCardsSorted = ((FlushHand) otherHand).cardsSorted;
 
-    for (int i = 0; i < this.valuesSorted.size(); i += 1) {
-      int compareResults = this.valuesSorted.get(i).compareTo(otherHandValuesSorted.get(i));
+    for (int i = 0; i < this.cardsSorted.size(); i += 1) {
+      Card currentThisCard = this.cardsSorted.get(i);
+      Card currentOtherHandCard = otherHandCardsSorted.get(i);
 
-      if (compareResults > 0) {
-        return new CompareResults(Result.WIN);
-      } else if (compareResults < 0) {
-        return new CompareResults(Result.LOSE);
+      if (currentThisCard.value > currentOtherHandCard.value) {
+        return new CompareResults(Result.WIN, this.getWinningConditionHigher(currentThisCard));
+      } else if (currentThisCard.value < currentOtherHandCard.value) {
+        return new CompareResults(Result.LOSE, this.getWinningConditionHigher(currentOtherHandCard));
       }
     }
 
     return new CompareResults(Result.TIE);
+  }
+
+  private String getWinningCondition(Card cardFlush) {
+    return cardFlush.suiteToString();
+  }
+  private String getWinningConditionHigher(Card higherCard) {
+    return higherCard.suiteToString() + " and higher card " + higherCard.valueToString();
   }
 }

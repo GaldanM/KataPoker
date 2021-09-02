@@ -7,7 +7,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class FullHouseHand extends Hand {
-  int tripleValue;
+  Card tripleCard;
+  Card pairCard;
 
   public FullHouseHand() {
     this.handType = HandType.FULL_HOUSE;
@@ -26,10 +27,13 @@ public class FullHouseHand extends Hand {
       boolean isLastTwoTheTriple = cardListSorted.get(2).value == cardListSorted.get(4).value;
 
       if (isFirstTwoTheTriple) {
-        this.tripleValue = cardListSorted.get(0).value;
+        this.tripleCard = cardListSorted.get(0);
+        this.pairCard = cardListSorted.get(4);
       } else if (isLastTwoTheTriple) {
-        this.tripleValue = cardListSorted.get(4).value;
+        this.tripleCard = cardListSorted.get(4);
+        this.pairCard = cardListSorted.get(0);
       }
+      this.winningCondition = this.tripleCard.valueToString() + " over " + this.pairCard.valueToString();
 
       return isFirstTwoTheTriple || isLastTwoTheTriple;
     }
@@ -43,20 +47,20 @@ public class FullHouseHand extends Hand {
 
     for (HandType strongerHandType : strongerHandTypes) {
       if (otherHand.handType == strongerHandType) {
-        return new CompareResults(Result.LOSE);
+        return new CompareResults(Result.LOSE, otherHand.winningCondition);
       }
     }
 
     if (otherHand.handType != this.handType) {
-      return new CompareResults(Result.WIN);
+      return new CompareResults(Result.WIN, this.winningCondition);
     }
 
-    int otherHandTripleValue = ((FullHouseHand) otherHand).tripleValue;
+    int otherHandTripleValue = ((FullHouseHand) otherHand).tripleCard.value;
 
-    if (this.tripleValue < otherHandTripleValue) {
-      return new CompareResults(Result.LOSE);
+    if (this.tripleCard.value < otherHandTripleValue) {
+      return new CompareResults(Result.LOSE, otherHand.winningCondition);
     }
 
-    return new CompareResults(Result.WIN);
+    return new CompareResults(Result.WIN, this.winningCondition);
   }
 }

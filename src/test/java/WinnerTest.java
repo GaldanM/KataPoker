@@ -19,32 +19,32 @@ public class WinnerTest {
         new WinnerTestParameter(
             new String[] { "2C", "3H", "4S", "5C", "AH" },
             new String[] { "2H", "3S", "4D", "4H", "AD" },
-            "White wins. - with pair"
+            "White wins. - with pair: 4"
         ),
         new WinnerTestParameter(
-            new String[] { "2H", "3D", "5S", "9C", "KD" },
-            new String[] { "2C", "3H", "4S", "8C", "AH" },
-            "White wins. - with high card"
+            new String[] { "2H", "3D", "5S", "9C", "JD" },
+            new String[] { "2C", "3H", "4S", "8C", "QH" },
+            "White wins. - with high card: Queen"
+        ),
+        new WinnerTestParameter(
+            new String[] { "2C", "3H", "4S", "7C", "8H" },
+            new String[] { "2H", "3D", "5S", "6C", "7D" },
+            "Black wins. - with high card: 8"
         ),
         new WinnerTestParameter(
             new String[] { "2C", "3H", "4S", "8C", "AH" },
-            new String[] { "2H", "3D", "5S", "9C", "KD" },
-            "Black wins. - with high card"
+            new String[] { "2H", "3S", "4D", "TH", "AD" },
+            "White wins. - with high card: 10"
+        ),
+        new WinnerTestParameter(
+            new String[] { "2H", "3S", "4D", "TH", "AD" },
+            new String[] { "2C", "3H", "4S", "8C", "AH" },
+            "Black wins. - with high card: 10"
         ),
         new WinnerTestParameter(
             new String[] { "2C", "3H", "4S", "8C", "AH" },
             new String[] { "2H", "3S", "4D", "8H", "AD" },
             "Tie."
-        ),
-        new WinnerTestParameter(
-            new String[] { "2C", "3H", "4S", "7C", "AH" },
-            new String[] { "2H", "3S", "4D", "8H", "AD" },
-            "White wins. - with high card"
-        ),
-        new WinnerTestParameter(
-            new String[] { "2H", "3S", "4D", "8H", "AD" },
-            new String[] { "2C", "3H", "4S", "7C", "AH" },
-            "Black wins. - with high card"
         ),
     };
 
@@ -52,9 +52,9 @@ public class WinnerTest {
         Arguments.of("High Card against STRONGER Hand", parameters[0]),
         Arguments.of("High Card against STRONGER High Card", parameters[1]),
         Arguments.of("High Card against WEAKER High Card", parameters[2]),
-        Arguments.of("High Card against SAME High Card", parameters[3]),
-        Arguments.of("High Card against SAME High Card AND STRONGER second High Card", parameters[4]),
-        Arguments.of("High Card against SAME High Card AND WEAKER second High Card", parameters[5])
+        Arguments.of("High Card against SAME High Card AND STRONGER second High Card", parameters[3]),
+        Arguments.of("High Card against SAME High Card AND WEAKER second High Card", parameters[4]),
+        Arguments.of("High Card against SAME High Card AND SAME cards among the rest", parameters[5])
     );
   }
 
@@ -70,32 +70,32 @@ public class WinnerTest {
         new WinnerTestParameter(
             new String[] { "2C", "3H", "4S", "4C", "AH" },
             new String[] { "2H", "3S", "4D", "8H", "AD" },
-            "Black wins. - with pair"
+            "Black wins. - with pair: 4"
         ),
         new WinnerTestParameter(
             new String[] { "2C", "3H", "4S", "4C", "AH" },
             new String[] { "2H", "2S", "3D", "3S", "AD" },
-            "White wins. - with two pairs"
+            "White wins. - with two pairs: 3 and 2"
         ),
         new WinnerTestParameter(
             new String[] { "2C", "3H", "4S", "4C", "AH" },
             new String[] { "2H", "2S", "3D", "4S", "AD" },
-            "Black wins. - with pair"
+            "Black wins. - with pair: 4"
         ),
         new WinnerTestParameter(
             new String[] { "2C", "3H", "4S", "4C", "AH" },
             new String[] { "8H", "8S", "3D", "4S", "AD" },
-            "White wins. - with pair"
+            "White wins. - with pair: 8"
         ),
         new WinnerTestParameter(
             new String[] { "2C", "3H", "4S", "4C", "AH" },
             new String[] { "4H", "4D", "3D", "2S", "KD" },
-            "Black wins. - with pair"
+            "Black wins. - with pair: 4 and high card Ace"
         ),
         new WinnerTestParameter(
             new String[] { "4H", "4D", "3D", "2S", "KD" },
             new String[] { "2C", "3H", "4S", "4C", "AH" },
-            "White wins. - with pair"
+            "White wins. - with pair: 4 and high card Ace"
         ),
         new WinnerTestParameter(
             new String[] { "2C", "3H", "4S", "4C", "AH" },
@@ -127,32 +127,32 @@ public class WinnerTest {
         new WinnerTestParameter(
             new String[] { "2C", "2H", "4S", "4C", "AH" },
             new String[] { "3H", "3S", "4D", "8H", "AD" },
-            "Black wins. - with two pairs"
+            "Black wins. - with two pairs: 4 and 2"
         ),
         new WinnerTestParameter(
             new String[] { "2C", "2H", "4S", "4C", "AH" },
             new String[] { "3H", "3S", "3D", "8H", "AD" },
-            "White wins. - with three of a kind"
+            "White wins. - with three of a kind: 3"
         ),
         new WinnerTestParameter(
             new String[] { "9C", "9H", "8S", "8C", "AH" },
             new String[] { "3D", "3S", "2D", "2H", "AD" },
-            "Black wins. - with two pairs"
+            "Black wins. - with two pairs: 9 and 8"
         ),
         new WinnerTestParameter(
             new String[] { "9C", "9H", "8S", "8C", "AH" },
             new String[] { "9D", "9S", "3D", "3H", "AD" },
-            "Black wins. - with two pairs"
+            "Black wins. - with two pairs: 9 and 8"
         ),
         new WinnerTestParameter(
             new String[] { "9C", "9H", "8S", "8C", "AH" },
             new String[] { "9D", "9S", "8D", "8H", "KD" },
-            "Black wins. - with two pairs"
+            "Black wins. - with two pairs: 9 and 8 with higher card Ace"
         ),
         new WinnerTestParameter(
             new String[] { "9C", "9H", "8S", "8C", "KH" },
             new String[] { "9D", "9S", "8D", "8H", "AD" },
-            "White wins. - with two pairs"
+            "White wins. - with two pairs: 9 and 8 with higher card Ace"
         ),
         new WinnerTestParameter(
             new String[] { "9C", "9H", "8S", "8C", "AH" },
@@ -162,12 +162,12 @@ public class WinnerTest {
         new WinnerTestParameter(
             new String[] { "9C", "9H", "7S", "7C", "AH" },
             new String[] { "9D", "9S", "8D", "8H", "AD" },
-            "White wins. - with two pairs"
+            "White wins. - with two pairs: 9 and 8"
         ),
         new WinnerTestParameter(
             new String[] { "9C", "9H", "7S", "7C", "AH" },
             new String[] { "TD", "TS", "8D", "8H", "AD" },
-            "White wins. - with two pairs"
+            "White wins. - with two pairs: 10 and 8"
         ),
     };
 
@@ -196,22 +196,22 @@ public class WinnerTest {
         new WinnerTestParameter(
             new String[] { "2C", "2H", "2S", "4C", "AH" },
             new String[] { "5H", "5S", "4D", "4H", "AD" },
-            "Black wins. - with three of a kind"
+            "Black wins. - with three of a kind: 2"
         ),
         new WinnerTestParameter(
             new String[] { "2C", "2H", "2S", "4C", "AH" },
             new String[] { "2D", "3S", "4D", "5H", "6D" },
-            "White wins. - with straight"
+            "White wins. - with straight: 2, 3, 4, 5, 6"
         ),
         new WinnerTestParameter(
             new String[] { "3C", "3H", "3S", "4C", "AH" },
             new String[] { "2D", "2S", "2H", "5H", "6D" },
-            "Black wins. - with three of a kind"
+            "Black wins. - with three of a kind: 3"
         ),
         new WinnerTestParameter(
             new String[] { "2C", "2H", "2S", "4C", "AH" },
             new String[] { "3D", "3S", "3H", "5H", "6D" },
-            "White wins. - with three of a kind"
+            "White wins. - with three of a kind: 3"
         ),
     };
 
@@ -235,22 +235,22 @@ public class WinnerTest {
         new WinnerTestParameter(
             new String[] { "2C", "3H", "4S", "5C", "6H" },
             new String[] { "3D", "3S", "3C", "8H", "AD" },
-            "Black wins. - with straight"
+            "Black wins. - with straight: 2, 3, 4, 5, 6"
         ),
         new WinnerTestParameter(
             new String[] { "2C", "3H", "4S", "5C", "6H" },
             new String[] { "3D", "5D", "9D", "8D", "TD" },
-            "White wins. - with flush"
+            "White wins. - with flush: Diamond"
         ),
         new WinnerTestParameter(
             new String[] { "3C", "4H", "5S", "6C", "7H" },
             new String[] { "2C", "3H", "4S", "5C", "6H" },
-            "Black wins. - with straight"
+            "Black wins. - with straight: 3, 4, 5, 6, 7"
         ),
         new WinnerTestParameter(
             new String[] { "2C", "3H", "4S", "5C", "6H" },
             new String[] { "3C", "4H", "5S", "6C", "7H" },
-            "White wins. - with straight"
+            "White wins. - with straight: 3, 4, 5, 6, 7"
         ),
         new WinnerTestParameter(
             new String[] { "2C", "3H", "4S", "5C", "6H" },
@@ -280,22 +280,22 @@ public class WinnerTest {
         new WinnerTestParameter(
             new String[] { "TC", "4C", "8C", "KC", "AC" },
             new String[] { "2D", "3S", "4D", "5H", "6D" },
-            "Black wins. - with flush"
+            "Black wins. - with flush: Club"
         ),
         new WinnerTestParameter(
             new String[] { "TC", "4C", "8C", "KC", "AC" },
             new String[] { "2D", "2S", "2H", "3H", "3D" },
-            "White wins. - with full house"
+            "White wins. - with full house: 2 over 3"
         ),
         new WinnerTestParameter(
             new String[] { "TC", "4C", "8C", "KC", "AC" },
             new String[] { "TD", "4D", "8D", "KD", "QD" },
-            "Black wins. - with flush"
+            "Black wins. - with flush: Club and higher card Ace"
         ),
         new WinnerTestParameter(
             new String[] { "TD", "4D", "8D", "KD", "QD" },
             new String[] { "TC", "4C", "8C", "KC", "AC" },
-            "White wins. - with flush"
+            "White wins. - with flush: Club and higher card Ace"
         ),
         new WinnerTestParameter(
             new String[] { "TD", "4D", "8D", "KD", "AD" },
@@ -325,22 +325,22 @@ public class WinnerTest {
         new WinnerTestParameter(
             new String[] { "4S", "4C", "4D", "5S", "5C" },
             new String[] { "2D", "3S", "4D", "5H", "6D" },
-            "Black wins. - with full house"
+            "Black wins. - with full house: 4 over 5"
         ),
         new WinnerTestParameter(
             new String[] { "4S", "4C", "4D", "5S", "5C" },
             new String[] { "2D", "2S", "2C", "2H", "3D" },
-            "White wins. - with four of a kind"
+            "White wins. - with four of a kind: 2"
         ),
         new WinnerTestParameter(
             new String[] { "3S", "3C", "3D", "5S", "5C" },
             new String[] { "4S", "4C", "4D", "5S", "5C" },
-            "White wins. - with full house"
+            "White wins. - with full house: 4 over 5"
         ),
         new WinnerTestParameter(
             new String[] { "4S", "4C", "4D", "5S", "5C" },
             new String[] { "3S", "3C", "3D", "5S", "5C" },
-            "Black wins. - with full house"
+            "Black wins. - with full house: 4 over 5"
         ),
     };
 
@@ -364,22 +364,22 @@ public class WinnerTest {
         new WinnerTestParameter(
             new String[] { "2C", "2H", "2S", "2D", "AH" },
             new String[] { "3H", "3S", "3D", "4H", "4D" },
-            "Black wins. - with four of a kind"
+            "Black wins. - with four of a kind: 2"
         ),
         new WinnerTestParameter(
             new String[] { "2C", "2H", "2S", "2D", "AH" },
             new String[] { "3D", "4D", "5D", "6D", "7D" },
-            "White wins. - with straight flush"
+            "White wins. - with straight flush: 3, 4, 5, 6, 7 of Diamond"
         ),
         new WinnerTestParameter(
             new String[] { "2C", "2H", "2S", "2D", "AC" },
             new String[] { "3C", "3H", "3S", "3D", "AH" },
-            "White wins. - with four of a kind"
+            "White wins. - with four of a kind: 3"
         ),
         new WinnerTestParameter(
             new String[] { "3C", "3H", "3S", "3D", "AH" },
             new String[] { "2C", "2H", "2S", "2D", "AC" },
-            "Black wins. - with four of a kind"
+            "Black wins. - with four of a kind: 3"
         ),
     };
 
@@ -403,17 +403,17 @@ public class WinnerTest {
         new WinnerTestParameter(
             new String[] { "2D", "3D", "4D", "5D", "6D" },
             new String[] { "7D", "7C", "7S", "7H", "TD" },
-            "Black wins. - with straight flush"
+            "Black wins. - with straight flush: 2, 3, 4, 5, 6 of Diamond"
         ),
         new WinnerTestParameter(
             new String[] { "2D", "3D", "4D", "5D", "6D" },
             new String[] { "7D", "8D", "9D", "TD", "JD" },
-            "White wins. - with straight flush"
+            "White wins. - with straight flush: 7, 8, 9, 10, Jack of Diamond"
         ),
         new WinnerTestParameter(
             new String[] { "7D", "8D", "9D", "TD", "JD" },
             new String[] { "2D", "3D", "4D", "5D", "6D" },
-            "Black wins. - with straight flush"
+            "Black wins. - with straight flush: 7, 8, 9, 10, Jack of Diamond"
         ),
         new WinnerTestParameter(
             new String[] { "2D", "3D", "4D", "5D", "6D" },

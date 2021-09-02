@@ -25,6 +25,8 @@ public class ThreeOfAKindHand extends Hand {
 
           if (countKind == 3) {
             this.threeOfAKindValue = cardLeft.value;
+            this.winningCondition = cardLeft.valueToString();
+
             return true;
           }
         }
@@ -40,20 +42,20 @@ public class ThreeOfAKindHand extends Hand {
 
     for (HandType weakerHandType : weakerHandTypes) {
       if (otherHand.handType == weakerHandType) {
-        return new CompareResults(Result.WIN);
+        return new CompareResults(Result.WIN, this.winningCondition);
       }
     }
 
     if (otherHand.handType != this.handType) {
-      return new CompareResults(Result.LOSE);
+      return new CompareResults(Result.LOSE, otherHand.winningCondition);
     }
 
     int otherHandValue = ((ThreeOfAKindHand) otherHand).threeOfAKindValue;
 
     if (this.threeOfAKindValue > otherHandValue) {
-      return new CompareResults(Result.WIN);
+      return new CompareResults(Result.WIN, this.winningCondition);
     }
 
-    return new CompareResults(Result.LOSE);
+    return new CompareResults(Result.LOSE, otherHand.winningCondition);
   }
 }

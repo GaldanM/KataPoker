@@ -7,8 +7,8 @@ import java.util.Collections;
 import java.util.stream.IntStream;
 
 public class TwoPairsHand extends Hand {
-  public ArrayList<Integer> pairValues = new ArrayList<>();
-  public int remainingValue;
+  public ArrayList<Card> pairCards = new ArrayList<>();
+  public Card remainingCard;
 
   public TwoPairsHand() {
     this.handType = HandType.TWO_PAIRS;
@@ -28,11 +28,12 @@ public class TwoPairsHand extends Hand {
 
         if (cardLeft.value == cardRight.value) {
           foundIndexesSum += i + j;
-          this.pairValues.add(cardLeft.value);
+          this.pairCards.add(cardLeft);
 
-          if (this.pairValues.size() == 2) {
-            this.pairValues.sort(Collections.reverseOrder());
-            this.remainingValue = cardList.get(maxIndexesSum - foundIndexesSum).value;
+          if (this.pairCards.size() == 2) {
+            this.pairCards.sort(Collections.reverseOrder());
+            this.remainingCard = cardList.get(maxIndexesSum - foundIndexesSum);
+            this.winningCondition = this.getWinningCondition(this.pairCards.get(0), this.pairCards.get(1));
 
             return true;
           }
@@ -48,39 +49,40 @@ public class TwoPairsHand extends Hand {
     HandType[] weakerHandTypes = new HandType[] { HandType.HIGH, HandType.PAIR };
     for (HandType weakerHandType : weakerHandTypes) {
       if (otherHand.handType == weakerHandType) {
-        return new CompareResults(Result.WIN);
+        return new CompareResults(Result.WIN, this.winningCondition);
       }
     }
 
     if (otherHand.handType != this.handType) {
-      return new CompareResults(Result.LOSE);
+      return new CompareResults(Result.LOSE, otherHand.winningCondition);
     }
 
     TwoPairsHand otherTwoPairsHand = ((TwoPairsHand) otherHand);
 
     for (int i = 0; i < 2; i += 1) {
-      Result comparePairResult = comparePair(this.pairValues.get(i), otherTwoPairsHand.pairValues.get(i));
+      Card currentThisPairCard = this.pairCards.get(i);
+      Card otherHandThisPairCard = otherTwoPairsHand.pairCards.get(i);
 
-      if (comparePairResult != Result.TIE) {
-        return new CompareResults(comparePairResult);
+      if (currentThisPairCard.value > otherHandThisPairCard.value) {
+        return new CompareResults(Result.WIN, this.winningCondition);
+      } else if (currentThisPairCard.value < otherHandThisPairCard.value) {
+        return new CompareResults(Result.LOSE, otherHand.winningCondition);
       }
     }
 
-    if (this.remainingValue > otherTwoPairsHand.remainingValue) {
-      return new CompareResults(Result.WIN);
-    } else if (this.remainingValue < otherTwoPairsHand.remainingValue) {
-      return new CompareResults(Result.LOSE);
+    if (this.remainingCard.value > otherTwoPairsHand.remainingCard.value) {
+      return new CompareResults(Result.WIN, this.getWinningCondition(this.pairCards.get(0), this.pairCards.get(1), this.remainingCard));
+    } else if (this.remainingCard.value < otherTwoPairsHand.remainingCard.value) {
+      return new CompareResults(Result.LOSE, this.getWinningCondition(otherTwoPairsHand.pairCards.get(0), otherTwoPairsHand.pairCards.get(1), otherTwoPairsHand.remainingCard));
     }
 
     return new CompareResults(Result.TIE);
   }
 
-  private Result comparePair(int v1, int v2) {
-    if (v1 > v2) {
-      return Result.WIN;
-    } else if (v1 < v2) {
-      return Result.LOSE;
-    }
-    return Result.TIE;
+  private String getWinningCondition(Card highestPairCard, Card lowestPairCard) {
+    return highestPairCard.valueToString() + " and " + lowestPairCard.valueToString();
+  }
+  private String getWinningCondition(Card highestPairCard, Card lowestPairCard, Card highestCard) {
+    return highestPairCard.valueToString() + " and " + lowestPairCard.valueToString() + " with higher card " + highestCard.valueToString();
   }
 }
