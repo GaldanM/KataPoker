@@ -1,73 +1,17 @@
 package card;
 
 public class Card implements Comparable<Card> {
-    public int value;
+    public Figure figure;
     public Suite suite;
 
     public Card(String cardDescription) throws Exception {
-        this.value = parseValue(cardDescription.substring(0, 1));
-        this.suite = this.parseSuite(cardDescription.substring(1));
-    }
-
-    private int parseValue(String valueChar) throws Exception {
-        switch (valueChar) {
-            case "T":
-                return 10;
-            case "J":
-                return 11;
-            case "Q":
-                return 12;
-            case "K":
-                return 13;
-            case "A":
-                return 14;
-        }
-
-        try {
-            int value = Integer.parseInt(valueChar);
-
-            if (value < 2) {
-                throw new Exception();
-            }
-
-            return value;
-        } catch (Exception exception) {
-            throw new Exception("Expected value to be one of [2-9|T|J|Q|K], got " + valueChar);
-        }
-    }
-
-    private Suite parseSuite(String suiteChar) throws Exception {
-        return switch (suiteChar) {
-            case "C" -> Suite.CLUB;
-            case "D" -> Suite.DIAMOND;
-            case "H" -> Suite.HEART;
-            case "S" -> Suite.SPADE;
-            default -> throw new Exception("Unknown suite: " + suiteChar);
-        };
-    }
-
-    public String valueToString() {
-        return switch (this.value) {
-            case 11 -> "Jack";
-            case 12 -> "Queen";
-            case 13 -> "King";
-            case 14 -> "Ace";
-            default -> String.valueOf(this.value);
-        };
-    }
-
-    public String suiteToString() {
-        return switch (this.suite) {
-            case CLUB -> "Club";
-            case HEART -> "Heart";
-            case SPADE -> "Spade";
-            case DIAMOND -> "Diamond";
-        };
+        this.figure = Figure.getFigureFromInitial(cardDescription.substring(0, 1));
+        this.suite = Suite.getSuiteFromInitial(cardDescription.substring(1));
     }
 
     @Override
     public int compareTo(Card otherCard) {
-        return Integer.compare(this.value, otherCard.value);
+        return Integer.compare(this.figure.value, otherCard.figure.value);
     }
 
     @Override
@@ -80,19 +24,65 @@ public class Card implements Comparable<Card> {
             return false;
         }
 
-        return this.value == cardToCheck.value && this.suite == cardToCheck.suite;
+        return this.figure == cardToCheck.figure && this.suite == cardToCheck.suite;
+    }
+
+    public enum Figure {
+        TWO("2", 2, "2"),
+        THREE("3", 3, "3"),
+        FOUR("4", 4, "4"),
+        FIVE("5", 5, "5"),
+        SIX("6", 6, "6"),
+        SEVEN("7", 7, "7"),
+        EIGHT("8", 8, "8"),
+        NINE("9", 9, "9"),
+        TEN("T", 10, "10"),
+        JACK("J", 11, "Jack"),
+        QUEEN("Q", 12, "Queen"),
+        KING("K", 13, "King"),
+        ACE("A", 14, "Ace");
+
+        public final String initial;
+        public final int value;
+        public final String label;
+
+        Figure(String initial, int value, String label) {
+            this.initial = initial;
+            this.value = value;
+            this.label = label;
+        }
+
+        public static Figure getFigureFromInitial(String initial) throws Exception {
+            for (Figure figure : Figure.values()) {
+                if (initial.equals(figure.initial)) {
+                    return figure;
+                }
+            }
+            throw new Exception("Expected value to be one of [2-9|T|J|Q|K], got " + initial);
+        }
     }
 
     public enum Suite {
-        CLUB("C"),
-        DIAMOND("D"),
-        HEART("H"),
-        SPADE("S");
+        CLUB("C","Club"),
+        DIAMOND("D", "Diamond"),
+        HEART("H", "Heart"),
+        SPADE("S", "Spade");
 
+        public final String initial;
         public final String label;
 
-        Suite(String label) {
+        Suite(String initial, String label) {
+            this.initial = initial;
             this.label = label;
+        }
+
+        public static Suite getSuiteFromInitial(String initial) throws Exception {
+            for (Suite suite : Suite.values()) {
+                if (initial.equals(suite.initial)) {
+                    return suite;
+                }
+            }
+            throw new Exception("Unknown suite: " + initial);
         }
     }
 }

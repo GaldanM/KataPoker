@@ -1,9 +1,7 @@
 import card.Card;
 import hands.*;
 
-import java.util.AbstractMap;
-import java.util.ArrayList;
-import java.util.Map;
+import java.util.*;
 
 public class KataPoker {
   static Hand createHand(String[] cardDescriptions) throws Exception {

@@ -15,17 +15,17 @@ public class FourOfAKindHand extends Hand {
   @Override
   public boolean check(ArrayList<Card> cardList) {
     for (int i = 0; i < cardList.size(); i += 1) {
-      Card cardLeft = cardList.get(i);
+      Card.Figure figureLeft = cardList.get(i).figure;
 
       for (int j = i + 1, countKind = 1; j < cardList.size(); j += 1) {
-        Card cardRight = cardList.get(j);
+        Card.Figure figureRight = cardList.get(j).figure;
 
-        if (cardLeft.value == cardRight.value) {
+        if (figureLeft == figureRight) {
           countKind += 1;
 
           if (countKind == 4) {
-            this.quadrupleValue = cardLeft.value;
-            this.winningCondition = cardLeft.valueToString();
+            this.quadrupleValue = figureLeft.value;
+            this.winningCondition = figureLeft.label;
 
             return true;
           }

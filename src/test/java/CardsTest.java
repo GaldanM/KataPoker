@@ -9,7 +9,7 @@ public class CardsTest {
     @ParameterizedTest
     @EnumSource(Card.Suite.class)
     void createCardsSuite(Card.Suite suite) throws Exception {
-        String cardDescription = "2" + suite.label;
+        String cardDescription = "2" + suite.initial;
 
         Card card = new Card(cardDescription);
 
@@ -26,14 +26,14 @@ public class CardsTest {
     }
 
     @ParameterizedTest
-    @CsvSource({ "T,10", "J,11", "Q,12", "K,13", "A,14" })
-    void createCardsFigure(String figureChar, String expectedValue) throws Exception {
-        String cardDescription = figureChar + "H";
+    @CsvSource({ "T,10,10", "J,11,Jack", "Q,12,Queen", "K,13,King", "A,14,Ace" })
+    void createCardsFigure(String initial, String expectedValue, String expectedLabel) throws Exception {
+        String cardDescription = initial + "H";
 
         Card card = new Card(cardDescription);
 
-        Assertions.assertThat(card.value).isEqualTo(Integer.parseInt(expectedValue));
-        Assertions.assertThat(card.suite).isEqualTo(Card.Suite.HEART);
+        Assertions.assertThat(card.figure.value).isEqualTo(Integer.parseInt(expectedValue));
+        Assertions.assertThat(card.figure.label).isEqualTo(expectedLabel);
     }
 
     @Test

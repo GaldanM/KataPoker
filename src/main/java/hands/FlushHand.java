@@ -28,7 +28,7 @@ public class FlushHand extends Hand {
     }
 
     this.cardsSorted = cardList.stream().sorted(Collections.reverseOrder()).collect(Collectors.toList());
-    this.winningCondition = getWinningCondition(this.cardsSorted.get(0));
+    this.winningCondition = getWinningCondition(this.cardsSorted.get(0).suite);
 
     return true;
   }
@@ -43,7 +43,7 @@ public class FlushHand extends Hand {
       }
     }
 
-    if (otherHand.handType != HandType.FLUSH) {
+    if (otherHand.handType != this.handType) {
       return new CompareResults(Result.WIN, this.winningCondition);
     }
 
@@ -53,20 +53,20 @@ public class FlushHand extends Hand {
       Card currentThisCard = this.cardsSorted.get(i);
       Card currentOtherHandCard = otherHandCardsSorted.get(i);
 
-      if (currentThisCard.value > currentOtherHandCard.value) {
-        return new CompareResults(Result.WIN, this.getWinningConditionHigher(currentThisCard));
-      } else if (currentThisCard.value < currentOtherHandCard.value) {
-        return new CompareResults(Result.LOSE, this.getWinningConditionHigher(currentOtherHandCard));
+      if (currentThisCard.figure.value > currentOtherHandCard.figure.value) {
+        return new CompareResults(Result.WIN, this.getWinningCondition(currentThisCard));
+      } else if (currentThisCard.figure.value < currentOtherHandCard.figure.value) {
+        return new CompareResults(Result.LOSE, this.getWinningCondition(currentOtherHandCard));
       }
     }
 
     return new CompareResults(Result.TIE);
   }
 
-  private String getWinningCondition(Card cardFlush) {
-    return cardFlush.suiteToString();
+  private String getWinningCondition(Card.Suite suiteFlush) {
+    return suiteFlush.label;
   }
-  private String getWinningConditionHigher(Card higherCard) {
-    return higherCard.suiteToString() + " and higher card " + higherCard.valueToString();
+  private String getWinningCondition(Card flushHighestCard) {
+    return flushHighestCard.suite.label + " and higher card " + flushHighestCard.figure.label;
   }
 }

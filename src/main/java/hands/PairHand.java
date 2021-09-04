@@ -4,11 +4,12 @@ import card.Card;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 public class PairHand extends Hand {
-  public Card pairCard;
-  public List<Card> remainingCardsOrdered;
+  public Card.Figure pairFigure;
+  public List<Card.Figure> remainingFiguresOrdered;
 
   public PairHand() {
     this.handType = HandType.PAIR;
@@ -18,19 +19,19 @@ public class PairHand extends Hand {
   @Override
   public boolean check(ArrayList<Card> cardList) {
     for (int i = 0; i < cardList.size(); i += 1) {
-      Card cardLeft = cardList.get(i);
+      Card.Figure figureLeft = cardList.get(i).figure;
 
       for (int j = i + 1; j < cardList.size(); j += 1) {
-        Card cardRight = cardList.get(j);
+        Card.Figure figureRight = cardList.get(j).figure;
 
-        if (cardLeft.value == cardRight.value) {
-          this.pairCard = cardLeft;
-          this.winningCondition = this.getWinningCondition(cardLeft);
+        if (figureLeft == figureRight) {
+          this.pairFigure = figureLeft;
+          this.winningCondition = PairHand.getWinningCondition(figureLeft);
 
-          ArrayList<Card> tmp = new ArrayList<>(cardList);
-          tmp.remove(i);
-          tmp.remove(j - 1);
-          this.remainingCardsOrdered = List.copyOf(tmp.stream().sorted(Collections.reverseOrder()).toList());
+          LinkedList<Card> cardLinkedList = new LinkedList<>(cardList);
+          cardLinkedList.remove(i);
+          cardLinkedList.remove(j - 1);
+          this.remainingFiguresOrdered = List.copyOf(cardLinkedList.stream().map(card -> card.figure).sorted(Collections.reverseOrder()).toList());
 
           return true;
         }
@@ -46,36 +47,38 @@ public class PairHand extends Hand {
     }
 
     if (otherHand.handType == this.handType) {
-      Card otherHandPairCard = ((PairHand) otherHand).pairCard;
+      PairHand otherPairHand = ((PairHand) otherHand);
+      Card.Figure otherHandPairFigure = otherPairHand.pairFigure;
 
-      if (this.pairCard.value > otherHandPairCard.value) {
+      if (this.pairFigure.value > otherHandPairFigure.value) {
         return new CompareResults(Result.WIN, this.winningCondition);
-      } else if (this.pairCard.value == otherHandPairCard.value) {
-        List<Card> otherHandValuesSorted = ((PairHand) otherHand).remainingCardsOrdered;
-
-        for (int i = 0; i < this.remainingCardsOrdered.size(); i += 1) {
-          Card currentThisCard = this.remainingCardsOrdered.get(i);
-          Card currentOtherHandCard = otherHandValuesSorted.get(i);
-
-          if (currentThisCard.value > currentOtherHandCard.value) {
-            return new CompareResults(Result.WIN, this.getWinningCondition(this.pairCard, currentThisCard));
-          } else if (currentThisCard.value < currentOtherHandCard.value) {
-            return new CompareResults(Result.LOSE, this.getWinningCondition(otherHandPairCard, currentOtherHandCard));
-          }
-        }
-
-        return new CompareResults(Result.TIE);
+      } else if (this.pairFigure == otherHandPairFigure) {
+        return this.checkRemaining(otherPairHand);
       }
     }
 
     return new CompareResults(Result.LOSE, otherHand.winningCondition);
   }
 
-  private String getWinningCondition(Card pairCard) {
-    return pairCard.valueToString();
+  private CompareResults checkRemaining(PairHand otherHand) {
+    for (int i = 0; i < this.remainingFiguresOrdered.size(); i += 1) {
+      Card.Figure currentThisFigure = this.remainingFiguresOrdered.get(i);
+      Card.Figure currentOtherHandFigure = otherHand.remainingFiguresOrdered.get(i);
+
+      if (currentThisFigure.value > currentOtherHandFigure.value) {
+        return new CompareResults(Result.WIN, PairHand.getWinningCondition(this.pairFigure, currentThisFigure));
+      } else if (currentThisFigure.value < currentOtherHandFigure.value) {
+        return new CompareResults(Result.LOSE, PairHand.getWinningCondition(otherHand.pairFigure, currentOtherHandFigure));
+      }
+    }
+    return new CompareResults(Result.TIE);
   }
 
-  private String getWinningCondition(Card pairCard, Card highestCard) {
-    return pairCard.valueToString() + " and high card " + highestCard.valueToString();
+  public static String getWinningCondition(Card.Figure pairFigure) {
+    return pairFigure.label;
+  }
+
+  public static String getWinningCondition(Card.Figure pairFigure, Card.Figure highestFigureAmongRest) {
+    return pairFigure.label + " and high card " + highestFigureAmongRest.label;
   }
 }

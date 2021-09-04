@@ -7,8 +7,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class FullHouseHand extends Hand {
-  Card tripleCard;
-  Card pairCard;
+  Card.Figure tripleFigure;
+  Card.Figure pairFigure;
 
   public FullHouseHand() {
     this.handType = HandType.FULL_HOUSE;
@@ -19,21 +19,21 @@ public class FullHouseHand extends Hand {
   public boolean check(ArrayList<Card> cardList) {
     List<Card> cardListSorted = cardList.stream().sorted().collect(Collectors.toList());
 
-    boolean firstTwoAreTheSame = cardListSorted.get(0).value == cardListSorted.get(1).value;
-    boolean lastTwoAreTheSame = cardListSorted.get(3).value == cardListSorted.get(4).value;
+    boolean firstTwoAreTheSame = cardListSorted.get(0).figure == cardListSorted.get(1).figure;
+    boolean lastTwoAreTheSame = cardListSorted.get(3).figure == cardListSorted.get(4).figure;
 
     if (firstTwoAreTheSame && lastTwoAreTheSame) {
-      boolean isFirstTwoTheTriple = cardListSorted.get(2).value == cardListSorted.get(0).value;
-      boolean isLastTwoTheTriple = cardListSorted.get(2).value == cardListSorted.get(4).value;
+      boolean isFirstTwoTheTriple = cardListSorted.get(2).figure == cardListSorted.get(0).figure;
+      boolean isLastTwoTheTriple = cardListSorted.get(2).figure == cardListSorted.get(4).figure;
 
       if (isFirstTwoTheTriple) {
-        this.tripleCard = cardListSorted.get(0);
-        this.pairCard = cardListSorted.get(4);
+        this.tripleFigure = cardListSorted.get(0).figure;
+        this.pairFigure = cardListSorted.get(4).figure;
       } else if (isLastTwoTheTriple) {
-        this.tripleCard = cardListSorted.get(4);
-        this.pairCard = cardListSorted.get(0);
+        this.tripleFigure = cardListSorted.get(4).figure;
+        this.pairFigure = cardListSorted.get(0).figure;
       }
-      this.winningCondition = this.tripleCard.valueToString() + " over " + this.pairCard.valueToString();
+      this.winningCondition = this.tripleFigure.label + " over " + this.pairFigure.label;
 
       return isFirstTwoTheTriple || isLastTwoTheTriple;
     }
@@ -55,9 +55,9 @@ public class FullHouseHand extends Hand {
       return new CompareResults(Result.WIN, this.winningCondition);
     }
 
-    int otherHandTripleValue = ((FullHouseHand) otherHand).tripleCard.value;
+    int otherHandTripleValue = ((FullHouseHand) otherHand).tripleFigure.value;
 
-    if (this.tripleCard.value < otherHandTripleValue) {
+    if (this.tripleFigure.value < otherHandTripleValue) {
       return new CompareResults(Result.LOSE, otherHand.winningCondition);
     }
 

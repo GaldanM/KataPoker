@@ -22,10 +22,10 @@ public class StraightFlushHand extends Hand {
 
     this.highestValue = straightHand.highestValue;
     this.winningCondition = straightHand.sortedCards.stream()
-        .map(Card::valueToString)
+        .map(card -> card.figure.label)
         .collect(Collectors.joining(", ")) +
         " of " +
-        straightHand.sortedCards.get(0).suiteToString();
+        straightHand.sortedCards.get(0).suite.label;
 
     return isStraight && isFlush;
   }
