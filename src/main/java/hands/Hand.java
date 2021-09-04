@@ -11,7 +11,7 @@ public abstract class Hand {
 
   public abstract boolean check(ArrayList<Card> cardList);
 
-  public abstract CompareResults compare(Hand whiteHand);
+  public abstract HandCompare compare(Hand whiteHand);
 
   public enum HandType {
     HIGH,
@@ -25,23 +25,23 @@ public abstract class Hand {
     STRAIGHT_FLUSH,
   }
 
-  public static class CompareResults {
+  public static class HandCompare {
     public Result result;
     public String winningCondition;
 
-    public CompareResults(Result result, String winningCondition) {
+    public HandCompare(Result result, String winningCondition) {
       this.result = result;
       this.winningCondition = winningCondition;
     }
 
-    public CompareResults(Result result) {
+    public HandCompare(Result result) {
       this.result = result;
     }
-  }
 
-  public enum Result {
-    WIN,
-    LOSE,
-    TIE
+    public enum Result {
+      WIN,
+      LOSE,
+      TIE
+    }
   }
 }

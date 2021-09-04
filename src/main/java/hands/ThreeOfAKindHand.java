@@ -5,7 +5,7 @@ import card.Card;
 import java.util.ArrayList;
 
 public class ThreeOfAKindHand extends Hand {
-  int threeOfAKindValue;
+  Card.Figure threeOfAKindFigure;
 
   public ThreeOfAKindHand() {
     this.handType = HandType.THREE_OF_A_KIND;
@@ -20,12 +20,12 @@ public class ThreeOfAKindHand extends Hand {
       for (int j = i + 1, countKind = 1; j < cardList.size(); j += 1) {
         Card cardRight = cardList.get(j);
 
-        if (cardLeft.value == cardRight.value) {
+        if (cardLeft.figure == cardRight.figure) {
           countKind += 1;
 
           if (countKind == 3) {
-            this.threeOfAKindValue = cardLeft.value;
-            this.winningCondition = cardLeft.valueToString();
+            this.threeOfAKindFigure = cardLeft.figure;
+            this.winningCondition = cardLeft.figure.label;
 
             return true;
           }
@@ -37,25 +37,23 @@ public class ThreeOfAKindHand extends Hand {
   }
 
   @Override
-  public CompareResults compare(Hand otherHand) {
+  public HandCompare compare(Hand otherHand) {
     HandType[] weakerHandTypes = new HandType[] { HandType.HIGH, HandType.PAIR, HandType.TWO_PAIRS };
-
     for (HandType weakerHandType : weakerHandTypes) {
       if (otherHand.handType == weakerHandType) {
-        return new CompareResults(Result.WIN, this.winningCondition);
+        return new HandCompare(HandCompare.Result.WIN, this.winningCondition);
       }
     }
 
     if (otherHand.handType != this.handType) {
-      return new CompareResults(Result.LOSE, otherHand.winningCondition);
+      return new HandCompare(HandCompare.Result.LOSE, otherHand.winningCondition);
     }
 
-    int otherHandValue = ((ThreeOfAKindHand) otherHand).threeOfAKindValue;
-
-    if (this.threeOfAKindValue > otherHandValue) {
-      return new CompareResults(Result.WIN, this.winningCondition);
+    Card.Figure otherHandThreeOfAKindFigure = ((ThreeOfAKindHand) otherHand).threeOfAKindFigure;
+    if (this.threeOfAKindFigure.value > otherHandThreeOfAKindFigure.value) {
+      return new HandCompare(HandCompare.Result.WIN, this.winningCondition);
     }
 
-    return new CompareResults(Result.LOSE, otherHand.winningCondition);
+    return new HandCompare(HandCompare.Result.LOSE, otherHand.winningCondition);
   }
 }

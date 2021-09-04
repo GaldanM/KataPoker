@@ -1,12 +1,10 @@
 import card.Card;
 import hands.*;
 
-import java.util.AbstractMap;
-import java.util.ArrayList;
-import java.util.Map;
+import java.util.*;
 
 public class KataPoker {
-  static Hand createHand(String[] cardDescriptions) throws Exception {
+  public static Hand createHand(String[] cardDescriptions) throws Exception {
     ArrayList<Card> cardList = new ArrayList<>();
     for (String cardDescription : cardDescriptions) {
       cardList.add(new Card(cardDescription));
@@ -55,16 +53,16 @@ public class KataPoker {
   }
 
   public static String whichHandWins(Hand blackHand, Hand whiteHand) {
-    Hand.CompareResults compareResults = blackHand.compare(whiteHand);
+    Hand.HandCompare handCompare = blackHand.compare(whiteHand);
 
-    if (compareResults.result == Hand.Result.TIE) {
+    if (handCompare.result == Hand.HandCompare.Result.TIE) {
       return "Tie.";
     }
 
     Map.Entry<String, Hand> blackHandWithColor = new AbstractMap.SimpleEntry<>("Black", blackHand);
     Map.Entry<String, Hand> whiteHandWithColor = new AbstractMap.SimpleEntry<>("White", whiteHand);
-    Map.Entry<String, Hand> winningHand = compareResults.result == Hand.Result.WIN ? blackHandWithColor : whiteHandWithColor;
+    Map.Entry<String, Hand> winningHand = handCompare.result == Hand.HandCompare.Result.WIN ? blackHandWithColor : whiteHandWithColor;
 
-    return winningHand.getKey() + " wins. - with " + winningHand.getValue().name + ": " + compareResults.winningCondition;
+    return winningHand.getKey() + " wins. - with " + winningHand.getValue().name + ": " + handCompare.winningCondition;
   }
 }

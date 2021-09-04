@@ -28,23 +28,23 @@ public class FlushHand extends Hand {
     }
 
     this.cardsSorted = cardList.stream().sorted(Collections.reverseOrder()).collect(Collectors.toList());
-    this.winningCondition = getWinningCondition(this.cardsSorted.get(0));
+    this.winningCondition = getWinningCondition(this.cardsSorted.get(0).suite);
 
     return true;
   }
 
   @Override
-  public CompareResults compare(Hand otherHand) {
+  public HandCompare compare(Hand otherHand) {
     HandType[] strongerHandTypes = new HandType[] { HandType.FULL_HOUSE, HandType.FOUR_OF_A_KIND, HandType.STRAIGHT_FLUSH };
 
     for (HandType strongerHandType : strongerHandTypes) {
       if (otherHand.handType == strongerHandType) {
-        return new CompareResults(Result.LOSE, otherHand.winningCondition);
+        return new HandCompare(HandCompare.Result.LOSE, otherHand.winningCondition);
       }
     }
 
-    if (otherHand.handType != HandType.FLUSH) {
-      return new CompareResults(Result.WIN, this.winningCondition);
+    if (otherHand.handType != this.handType) {
+      return new HandCompare(HandCompare.Result.WIN, this.winningCondition);
     }
 
     List<Card> otherHandCardsSorted = ((FlushHand) otherHand).cardsSorted;
@@ -53,20 +53,20 @@ public class FlushHand extends Hand {
       Card currentThisCard = this.cardsSorted.get(i);
       Card currentOtherHandCard = otherHandCardsSorted.get(i);
 
-      if (currentThisCard.value > currentOtherHandCard.value) {
-        return new CompareResults(Result.WIN, this.getWinningConditionHigher(currentThisCard));
-      } else if (currentThisCard.value < currentOtherHandCard.value) {
-        return new CompareResults(Result.LOSE, this.getWinningConditionHigher(currentOtherHandCard));
+      if (currentThisCard.figure.value > currentOtherHandCard.figure.value) {
+        return new HandCompare(HandCompare.Result.WIN, this.getWinningCondition(currentThisCard));
+      } else if (currentThisCard.figure.value < currentOtherHandCard.figure.value) {
+        return new HandCompare(HandCompare.Result.LOSE, this.getWinningCondition(currentOtherHandCard));
       }
     }
 
-    return new CompareResults(Result.TIE);
+    return new HandCompare(HandCompare.Result.TIE);
   }
 
-  private String getWinningCondition(Card cardFlush) {
-    return cardFlush.suiteToString();
+  private String getWinningCondition(Card.Suite suiteFlush) {
+    return suiteFlush.label;
   }
-  private String getWinningConditionHigher(Card higherCard) {
-    return higherCard.suiteToString() + " and higher card " + higherCard.valueToString();
+  private String getWinningCondition(Card flushHighestCard) {
+    return flushHighestCard.suite.label + " and higher card " + flushHighestCard.figure.label;
   }
 }

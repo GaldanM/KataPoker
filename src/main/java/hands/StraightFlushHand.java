@@ -22,28 +22,28 @@ public class StraightFlushHand extends Hand {
 
     this.highestValue = straightHand.highestValue;
     this.winningCondition = straightHand.sortedCards.stream()
-        .map(Card::valueToString)
+        .map(card -> card.figure.label)
         .collect(Collectors.joining(", ")) +
         " of " +
-        straightHand.sortedCards.get(0).suiteToString();
+        straightHand.sortedCards.get(0).suite.label;
 
     return isStraight && isFlush;
   }
 
   @Override
-  public CompareResults compare(Hand otherHand) {
+  public HandCompare compare(Hand otherHand) {
     if (otherHand.handType != this.handType) {
-      return new CompareResults(Result.WIN, this.winningCondition);
+      return new HandCompare(HandCompare.Result.WIN, this.winningCondition);
     }
 
     int otherHandHighestValueOfStraight = ((StraightFlushHand) otherHand).highestValue;
 
     if (this.highestValue < otherHandHighestValueOfStraight) {
-      return new CompareResults(Result.LOSE, otherHand.winningCondition);
+      return new HandCompare(HandCompare.Result.LOSE, otherHand.winningCondition);
     } else if (this.highestValue == otherHandHighestValueOfStraight) {
-      return new CompareResults(Result.TIE);
+      return new HandCompare(HandCompare.Result.TIE);
     }
 
-    return new CompareResults(Result.WIN, this.winningCondition);
+    return new HandCompare(HandCompare.Result.WIN, this.winningCondition);
   }
 }

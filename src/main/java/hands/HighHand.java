@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class HighHand extends Hand {
-  public List<Card> cardsSorted;
+  public List<Card.Figure> figuresSorted;
 
   public HighHand() {
     this.handType = HandType.HIGH;
@@ -17,35 +17,35 @@ public class HighHand extends Hand {
 
   @Override
   public boolean check(ArrayList<Card> cardList) {
-    this.cardsSorted = cardList.stream().sorted(Collections.reverseOrder()).collect(Collectors.toList());
-    this.winningCondition = this.getWinningCondition(this.cardsSorted.get(0));
+    this.figuresSorted = cardList.stream().sorted(Collections.reverseOrder()).map(card -> card.figure).collect(Collectors.toList());
+    this.winningCondition = HighHand.getWinningCondition(this.figuresSorted.get(0));
 
     return true;
   }
 
   @Override
-  public CompareResults compare(Hand otherHand) {
+  public HandCompare compare(Hand otherHand) {
     if (otherHand.handType != this.handType) {
-      return new CompareResults(Result.LOSE, otherHand.winningCondition);
+      return new HandCompare(HandCompare.Result.LOSE, otherHand.winningCondition);
     }
 
-    List<Card> otherHandValuesSorted = ((HighHand) otherHand).cardsSorted;
+    List<Card.Figure> otherHandValuesSorted = ((HighHand) otherHand).figuresSorted;
 
-    for (int i = 0; i < this.cardsSorted.size(); i += 1) {
-      Card currentThisCard = this.cardsSorted.get(i);
-      Card currentOtherHandCard = otherHandValuesSorted.get(i);
+    for (int i = 0; i < this.figuresSorted.size(); i += 1) {
+      Card.Figure currentThisFigure = this.figuresSorted.get(i);
+      Card.Figure currentOtherHandFigure = otherHandValuesSorted.get(i);
 
-      if (currentThisCard.value > currentOtherHandCard.value) {
-        return new CompareResults(Result.WIN, this.getWinningCondition(currentThisCard));
-      } else if (currentThisCard.value < currentOtherHandCard.value) {
-        return new CompareResults(Result.LOSE, this.getWinningCondition(currentOtherHandCard));
+      if (currentThisFigure.value > currentOtherHandFigure.value) {
+        return new HandCompare(HandCompare.Result.WIN, HighHand.getWinningCondition(currentThisFigure));
+      } else if (currentThisFigure.value < currentOtherHandFigure.value) {
+        return new HandCompare(HandCompare.Result.LOSE, HighHand.getWinningCondition(currentOtherHandFigure));
       }
     }
 
-    return new CompareResults(Result.TIE);
+    return new HandCompare(HandCompare.Result.TIE);
   }
 
-  private String getWinningCondition(Card winningCard) {
-    return winningCard.valueToString();
+  public static String getWinningCondition(Card.Figure winningFigure) {
+    return winningFigure.label;
   }
 }
