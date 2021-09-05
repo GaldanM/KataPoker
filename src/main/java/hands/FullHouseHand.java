@@ -12,7 +12,7 @@ public class FullHouseHand extends Hand {
 
   public FullHouseHand() {
     this.handType = HandType.FULL_HOUSE;
-    this.name = "full house";
+    this.label = "full house";
   }
 
   @Override

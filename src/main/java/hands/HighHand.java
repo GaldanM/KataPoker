@@ -7,32 +7,21 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class HighHand extends Hand {
+public class HighHand {
   public List<Card.Figure> figuresSorted;
 
-  public HighHand() {
-    this.handType = HandType.HIGH;
-    this.name = "high card";
-  }
-
-  @Override
-  public boolean check(ArrayList<Card> cardList) {
-    this.figuresSorted = cardList.stream().sorted(Collections.reverseOrder()).map(card -> card.figure).collect(Collectors.toList());
-    this.winningCondition = HighHand.getWinningCondition(this.figuresSorted.get(0));
-
+  public static boolean check(ArrayList<Card> cardList) {
     return true;
   }
 
-  @Override
-  public CompareResults compare(Hand otherHand) {
-    if (otherHand.handType != this.handType) {
-      return new CompareResults(Result.LOSE, otherHand.winningCondition);
-    }
+  public static HighHand compare(HighHand hand1, HighHand hand2) {
+    this.figuresSorted = cardList.stream().sorted(Collections.reverseOrder()).map(card -> card.figure).collect(Collectors.toList());
+    this.winningCondition = HighHand.getWinningCondition(this.figuresSorted.get(0));
 
-    List<Card.Figure> otherHandValuesSorted = ((HighHand) otherHand).figuresSorted;
+    List<Card.Figure> otherHandValuesSorted = hand2.figuresSorted;
 
-    for (int i = 0; i < this.figuresSorted.size(); i += 1) {
-      Card.Figure currentThisFigure = this.figuresSorted.get(i);
+    for (int i = 0; i < hand1.figuresSorted.size(); i += 1) {
+      Card.Figure currentThisFigure = hand1.figuresSorted.get(i);
       Card.Figure currentOtherHandFigure = otherHandValuesSorted.get(i);
 
       if (currentThisFigure.value > currentOtherHandFigure.value) {

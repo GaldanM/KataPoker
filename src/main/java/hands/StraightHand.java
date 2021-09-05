@@ -12,7 +12,7 @@ public class StraightHand extends Hand {
 
   public StraightHand() {
     this.handType = HandType.STRAIGHT;
-    this.name = "straight";
+    this.label = "straight";
   }
 
   @Override

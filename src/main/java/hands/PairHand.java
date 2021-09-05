@@ -13,7 +13,7 @@ public class PairHand extends Hand {
 
   public PairHand() {
     this.handType = HandType.PAIR;
-    this.name = "pair";
+    this.label = "pair";
   }
 
   @Override

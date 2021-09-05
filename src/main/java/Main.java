@@ -5,9 +5,13 @@ public class Main {
 
   public String execute(String input) throws Exception {
     String trimmedInput = input.trim();
-    Hand blackHand = KataPoker.createHand(trimmedInput.substring(7, 21).split(" "));
-    Hand whiteHand = KataPoker.createHand(trimmedInput.substring(29).split(" "));
+    String[] playerOneCardDescriptions = trimmedInput.substring(7, 21).split(" ");
+    String[] playerTwoCardDescriptions = trimmedInput.substring(29).split(" ");
 
-    return KataPoker.whichHandWins(blackHand, whiteHand);
+    Hand blackHand = Hand.getHandFromCardDescriptions(playerOneCardDescriptions);
+    Hand whiteHand = Hand.getHandFromCardDescriptions(playerTwoCardDescriptions);
+
+    Hand winningHand = Hand.compareHands(blackHand, whiteHand);
+    return winningHand.getKey() + " wins. - with " + winningHand.getValue().label + ": " + compareResults.winningCondition;
   }
 }

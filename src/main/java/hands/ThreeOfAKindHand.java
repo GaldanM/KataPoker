@@ -9,7 +9,7 @@ public class ThreeOfAKindHand extends Hand {
 
   public ThreeOfAKindHand() {
     this.handType = HandType.THREE_OF_A_KIND;
-    this.name = "three of a kind";
+    this.label = "three of a kind";
   }
 
   @Override
