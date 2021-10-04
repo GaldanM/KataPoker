@@ -5,7 +5,15 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.EnumSource;
 
+import static org.assertj.core.api.Assertions.*;
+
 public class CardsTest {
+
+    //@Test
+   /* void createCard() {
+        assertThat(Card.from("2C")).isEqualTo(new Card(Card.Figure.TWO, Card.Suite.CLUB))
+    }
+    */
     @ParameterizedTest
     @EnumSource(Card.Suite.class)
     void createCardsSuite(Card.Suite suite) throws Exception {
@@ -13,16 +21,15 @@ public class CardsTest {
 
         Card card = new Card(cardDescription);
 
-        Assertions.assertThat(card.suite).isEqualTo(suite);
+        assertThat(card.suite).isEqualTo(suite);
     }
 
     @Test
     void createCardWrongSymbol() {
-        String cardDescription = "2G";
+        String wrongCard = "2G";
 
-        Throwable thrown = Assertions.catchThrowable(() -> new Card(cardDescription));
-
-        Assertions.assertThat(thrown).isInstanceOf(Exception.class);
+        assertThatExceptionOfType(Exception.class)
+                .isThrownBy(() -> new Card(wrongCard));
     }
 
     @ParameterizedTest
@@ -31,9 +38,10 @@ public class CardsTest {
         String cardDescription = initial + "H";
 
         Card card = new Card(cardDescription);
+        
 
-        Assertions.assertThat(card.figure.value).isEqualTo(Integer.parseInt(expectedValue));
-        Assertions.assertThat(card.figure.label).isEqualTo(expectedLabel);
+        assertThat(card.figure.value).isEqualTo(Integer.parseInt(expectedValue));
+        assertThat(card.figure.label).isEqualTo(expectedLabel);
     }
 
     @Test
@@ -42,6 +50,6 @@ public class CardsTest {
 
         Throwable thrown = Assertions.catchThrowable(() -> new Card(cardDescription));
 
-        Assertions.assertThat(thrown).isInstanceOf(Exception.class);
+        assertThat(thrown).isInstanceOf(Exception.class);
     }
 }

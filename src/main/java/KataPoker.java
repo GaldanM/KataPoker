@@ -2,6 +2,8 @@ import card.Card;
 import hands.*;
 
 import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class KataPoker {
   public static Hand createHand(String[] cardDescriptions) throws Exception {
@@ -10,12 +12,12 @@ public class KataPoker {
       cardList.add(new Card(cardDescription));
     }
 
-    boolean hasDuplicateCard = checkIfListHasDuplicateCard(cardList);
-    if (hasDuplicateCard) {
+
+    if (checkIfListHasDuplicateCard(cardList)) {
       throw new Exception("The hand has a duplicate card, which is not right");
     }
 
-    Hand[] handsHighestToLowest = new Hand[] {
+    Hand[] handsHighestToLowest = new Hand[]{
         new StraightFlushHand(),
         new FourOfAKindHand(),
         new FullHouseHand(),
@@ -25,7 +27,7 @@ public class KataPoker {
         new TwoPairsHand(),
         new PairHand()
     };
-    for (Hand hand: handsHighestToLowest) {
+    for (Hand hand : handsHighestToLowest) {
       if (hand.check(cardList)) {
         return hand;
       }
@@ -37,19 +39,11 @@ public class KataPoker {
   }
 
   private static boolean checkIfListHasDuplicateCard(ArrayList<Card> cardList) {
-    for (int i = 0; i < cardList.size(); i += 1) {
-      Card cardToCheck = cardList.get(i);
-
-      for (int j = i + 1; j < cardList.size(); j += 1) {
-        Card currentCard = cardList.get(j);
-
-        if (currentCard.equals(cardToCheck)) {
-          return true;
-        }
-      }
-    }
-
-    return false;
+    return cardList.stream()
+        .collect(Collectors.groupingBy(Function.identity(),
+            Collectors.counting()
+        )).entrySet().stream()
+        .anyMatch(e -> e.getValue() >= 2);
   }
 
   public static String whichHandWins(Hand blackHand, Hand whiteHand) {

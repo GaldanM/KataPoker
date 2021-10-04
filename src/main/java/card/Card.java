@@ -1,12 +1,16 @@
 package card;
 
+import java.util.Arrays;
+import java.util.Objects;
+
 public class Card implements Comparable<Card> {
-    public Figure figure;
+    public Figure figure; //FIXME: private + final
     public Suite suite;
 
     public Card(String cardDescription) throws Exception {
-        this.figure = Figure.getFigureFromInitial(cardDescription.substring(0, 1));
-        this.suite = Suite.getSuiteFromInitial(cardDescription.substring(1));
+        // FIXME : smell de constructeur qui throw une exception => factory method
+        this.figure = Figure.from(cardDescription.substring(0, 1));
+        this.suite = Suite.from(cardDescription.substring(1));
     }
 
     @Override
@@ -25,6 +29,15 @@ public class Card implements Comparable<Card> {
         }
 
         return this.figure == cardToCheck.figure && this.suite == cardToCheck.suite;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(figure, suite);
+    }
+
+    public boolean isPairWith(Card other) {
+        return this.figure == other.figure;
     }
 
     public enum Figure {
@@ -52,13 +65,11 @@ public class Card implements Comparable<Card> {
             this.label = label;
         }
 
-        public static Figure getFigureFromInitial(String initial) throws Exception {
-            for (Figure figure : Figure.values()) {
-                if (initial.equals(figure.initial)) {
-                    return figure;
-                }
-            }
-            throw new Exception("Expected value to be one of [2-9|T|J|Q|K], got " + initial);
+        public static Figure from(String initial) throws Exception {
+            return Arrays.stream(Figure.values())
+                .filter(e -> e.initial.equals(initial))
+                .findFirst()
+                .orElseThrow(() -> new Exception("Expected value to be one of [2-9|T|J|Q|K], got " + initial));
         }
     }
 
@@ -76,7 +87,7 @@ public class Card implements Comparable<Card> {
             this.label = label;
         }
 
-        public static Suite getSuiteFromInitial(String initial) throws Exception {
+        public static Suite from(String initial) throws Exception {
             for (Suite suite : Suite.values()) {
                 if (initial.equals(suite.initial)) {
                     return suite;

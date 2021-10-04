@@ -2,6 +2,8 @@ import hands.Hand;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.util.stream.IntStream;
+
 public class HandsTest {
   @Test
   void createHighHand() throws Exception {
@@ -33,9 +35,10 @@ public class HandsTest {
 
   @Test
   void createStraightHand() throws Exception {
-    Hand hand = KataPoker.createHand(new String[] { "3H", "5D", "4S", "6C", "2D" });
 
-    Assertions.assertThat(hand.handType).isEqualTo(Hand.HandType.STRAIGHT);
+    Hand handWithConsecutiveFigures = KataPoker.createHand(new String[] { "3H", "5D", "4S", "6C", "2D" });
+
+    Assertions.assertThat(handWithConsecutiveFigures.handType).isEqualTo(Hand.HandType.STRAIGHT);
   }
 
   @Test
